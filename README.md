@@ -1,10 +1,10 @@
-# Campaign Commander Notication Messaging class
+# Campaign Commander class
 
-> Campaign Commander Member is the stuff you need to manage your Campaign Commander Notifications.
+> Campaign Commander is the stuff you need to manage your Campaign Commander.
 
 ## About
 
-PHP Campaign Commander Member is a (wrapper)class to communicate with the [Campaign Commander Notification Messaging](http://campaigncommander.com) API.
+PHP Campaign Commander is a (wrapper)class to communicate with the [Campaign Commander](http://campaigncommander.com) API.
 
 ## License
 
