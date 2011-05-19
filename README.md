@@ -8,7 +8,7 @@ PHP Campaign Commander is a (wrapper)class to communicate with the [Campaign Com
 
 ## License
 
-PHP Campaign Commander Member is [BSD](http://classes.verkoyen.eu/overview/bsd) licensed.
+PHP Campaign Commander is [BSD](http://classes.verkoyen.eu/overview/bsd) licensed.
 
 ## Documentation
 
