@@ -16,6 +16,7 @@
  * - implemented all segment-methods.
  * - implemented all campaign-methods.
  * - implemented all banner-methods.
+ * - implemented all banner-link-management-methods.
  *
  * License
  * Copyright (c), Tijs Verkoyen. All rights reserved.
@@ -2582,87 +2583,336 @@ class CampaignCommander
 
 
 // banner link management methods
-	public function createStandardBannerLink()
+	/**
+	 * Creates a standard link for the banner.
+	 *
+	 * @return	int				The order number of the url.
+	 * @param	string $id		The ID of the banner.
+	 * @param	string $name	The name of the banner.
+	 * @param	string $url		The url of the link.
+	 */
+	public function createStandardBannerLink($id, $name, $url)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['bannerId'] = (string) $id;
+		$parameters['name'] = (string) $name;
+		$parameters['url'] = (string) $url;
+
+		// make the call
+		return $this->doCall('createStandardBannerLink', $parameters);
 	}
 
 
-	public function createAndAddStandardBannerLink()
+	/**
+	 * Creates and adss standard link to the banner.
+	 *
+	 * @return	int				The order number of the url.
+	 * @param	string $id		The ID of the banner.
+	 * @param	string $name	The name of the banner.
+	 * @param	string $url		The url of the link.
+	 */
+	public function createAndAddStandardBannerLink($id, $name, $url)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['bannerId'] = (string) $id;
+		$parameters['name'] = (string) $name;
+		$parameters['url'] = (string) $url;
+
+		// make the call
+		return $this->doCall('createAndAddStandardBannerLink', $parameters);
 	}
 
 
-	public function createUnsubscribeBannerLink()
+	/**
+	 * Creates an unsubscribe link for the banner.
+	 *
+	 * @return	string							Order number of the URL.
+	 * @param	string $id						ID of the banner.
+	 * @param	string $name					Name of the URL.
+	 * @param	string[optional] $pageOk		URL to call when unsubscribe was successful.
+	 * @param	string[optional] $messageOk		Message to display when unsubscribe was successful.
+	 * @param	string[optional] $pageError		URL to call when unsubscribe was unsuccessful.
+	 * @param	string[optional] $messageError	Message to display when unsubscribe was unsuccessful.
+	 */
+	public function createUnsubscribeBannerLink($id, $name, $pageOk = null, $messageOk = null, $pageError = null, $messageError = null)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['bannerId'] = (string) $id;
+		$parameters['name'] = (string) $name;
+		if($pageOk !== null) $parameters['pageOK'] = (string) $pageOk;
+		if($messageOk !== null) $parameters['messageOK'] = (string) $messageOk;
+		if($pageError !== null) $parameters['pageError'] = (string) $pageError;
+		if($messageError !== null) $parameters['messageError'] = (string) $messageError;
+
+		// make the call
+		return $this->doCall('createUnsubscribeBannerLink', $parameters);
 	}
 
 
-	public function createAndAddUnsubscribeBannerLink()
+	/**
+	 * Creates and adds an unsubscribe link for the banner.
+	 *
+	 * @return	string							Order number of the URL.
+	 * @param	string $id						ID of the banner.
+	 * @param	string $name					Name of the URL.
+	 * @param	string[optional] $pageOk		URL to call when unsubscribe was successful.
+	 * @param	string[optional] $messageOk		Message to display when unsubscribe was successful.
+	 * @param	string[optional] $pageError		URL to call when unsubscribe was unsuccessful.
+	 * @param	string[optional] $messageError	Message to display when unsubscribe was unsuccessful.
+	 */
+	public function createAndAddUnsubscribeBannerLink($id, $name, $pageOk = null, $messageOk = null, $pageError = null, $messageError = null)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['bannerId'] = (string) $id;
+		$parameters['name'] = (string) $name;
+		if($pageOk !== null) $parameters['pageOK'] = (string) $pageOk;
+		if($messageOk !== null) $parameters['messageOK'] = (string) $messageOk;
+		if($pageError !== null) $parameters['pageError'] = (string) $pageError;
+		if($messageError !== null) $parameters['messageError'] = (string) $messageError;
+		// make the call
+		return $this->doCall('createAndAddUnsubscribeBannerLink', $parameters);
 	}
 
 
-	public function createPersonalisedBannerLink()
+	/**
+	 * Creates a personalized link to the banner.
+	 *
+	 * @return	int				The order number of the url.
+	 * @param	string $id		The ID of the banner.
+	 * @param	string $name	The name of the banner.
+	 * @param	string $url		The url of the link.
+	 */
+	public function createPersonalisedBannerLink($id, $name, $url)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['bannerId'] = (string) $id;
+		$parameters['name'] = (string) $name;
+		$parameters['url'] = (string) $url;
+
+		// make the call
+		return $this->doCall('createPersonalisedBannerLink', $parameters);
 	}
 
 
-	public function createAndAddPersonalisedBannerLink()
+	/**
+	 * Creates and adds personalized link to the banner.
+	 *
+	 * @return	int				The order number of the url.
+	 * @param	string $id		The ID of the banner.
+	 * @param	string $name	The name of the banner.
+	 * @param	string $url		The url of the link.
+	 */
+	public function createAndAddPersonalisedBannerLink($id, $name, $url)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['bannerId'] = (string) $id;
+		$parameters['name'] = (string) $name;
+		$parameters['url'] = (string) $url;
+
+		// make the call
+		return $this->doCall('createAndAddPersonalisedBannerLink', $parameters);
 	}
 
 
-	public function createUpdateBannerLink()
+	/**
+	 * Creates an update link for the banner.
+	 *
+	 * @return	string							Order number of the URL.
+	 * @param	string $id						ID of the banner.
+	 * @param	string $name					Name of the URL.
+	 * @param	mixed $parameters				The updateparameters to apply to the member.
+	 * @param	string[optional] $pageOk		URL to call when unsubscribe was successful.
+	 * @param	string[optional] $messageOk		Message to display when unsubscribe was successful.
+	 * @param	string[optional] $pageError		URL to call when unsubscribe was unsuccessful.
+	 * @param	string[optional] $messageError	Message to display when unsubscribe was unsuccessful.
+	 */
+	public function createUpdateBannerLink($id, $name, $parameters, $pageOk = null, $messageOk = null, $pageError = null, $messageError = null)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['bannerId'] = (string) $id;
+		$parameters['name'] = (string) $name;
+		$parameters['parameters'] = $parameters;
+		if($pageOk !== null) $parameters['pageOK'] = (string) $pageOk;
+		if($messageOk !== null) $parameters['messageOK'] = (string) $messageOk;
+		if($pageError !== null) $parameters['pageError'] = (string) $pageError;
+		if($messageError !== null) $parameters['messageError'] = (string) $messageError;
+
+		// make the call
+		return $this->doCall('createUpdateBannerLink', $parameters);
 	}
 
 
-	public function createAndAddUpdateBannerLink()
+	/**
+	 * Creates and adds an update link for the banner.
+	 *
+	 * @return	string							Order number of the URL.
+	 * @param	string $id						ID of the banner.
+	 * @param	string $name					Name of the URL.
+	 * @param	mixed $parameters				The updateparameters to apply to the member.
+	 * @param	string[optional] $pageOk		URL to call when unsubscribe was successful.
+	 * @param	string[optional] $messageOk		Message to display when unsubscribe was successful.
+	 * @param	string[optional] $pageError		URL to call when unsubscribe was unsuccessful.
+	 * @param	string[optional] $messageError	Message to display when unsubscribe was unsuccessful.
+	 */
+	public function createAndAddUpdateBannerLink($id, $name, $parameters, $pageOk = null, $messageOk = null, $pageError = null, $messageError = null)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['bannerId'] = (string) $id;
+		$parameters['name'] = (string) $name;
+		$parameters['parameters'] = $parameters;
+		if($pageOk !== null) $parameters['pageOK'] = (string) $pageOk;
+		if($messageOk !== null) $parameters['messageOK'] = (string) $messageOk;
+		if($pageError !== null) $parameters['pageError'] = (string) $pageError;
+		if($messageError !== null) $parameters['messageError'] = (string) $messageError;
+
+		// make the call
+		return $this->doCall('createAndAddUpdateBannerLink', $parameters);
 	}
 
 
-	public function createActionBannerLink()
+	/**
+	 * Creates and adds an action link for the banner.
+	 *
+	 * @return	string							Order number of the URL.
+	 * @param	string $id						ID of the banner.
+	 * @param	string $name					Name of the URL.
+	 * @param	string $action					The action to perform.
+	 * @param	string[optional] $pageOk		URL to call when unsubscribe was successful.
+	 * @param	string[optional] $messageOk		Message to display when unsubscribe was successful.
+	 * @param	string[optional] $pageError		URL to call when unsubscribe was unsuccessful.
+	 * @param	string[optional] $messageError	Message to display when unsubscribe was unsuccessful.
+	 */
+	public function createActionBannerLink($id, $name, $action, $pageOk = null, $messageOk = null, $pageError = null, $messageError = null)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['bannerId'] = (string) $id;
+		$parameters['name'] = (string) $name;
+		$parameters['action'] = (string) $action;
+		if($pageOk !== null) $parameters['pageOK'] = (string) $pageOk;
+		if($messageOk !== null) $parameters['messageOK'] = (string) $messageOk;
+		if($pageError !== null) $parameters['pageError'] = (string) $pageError;
+		if($messageError !== null) $parameters['messageError'] = (string) $messageError;
+
+		// make the call
+		return $this->doCall('createActionBannerLink', $parameters);
 	}
 
 
-	public function createAndAddActionBannerLink()
+	/**
+	 * Creates and adds an action link for the banner.
+	 *
+	 * @return	string							Order number of the URL.
+	 * @param	string $id						ID of the banner.
+	 * @param	string $name					Name of the URL.
+	 * @param	string $action					The action to perform.
+	 * @param	string[optional] $pageOk		URL to call when unsubscribe was successful.
+	 * @param	string[optional] $messageOk		Message to display when unsubscribe was successful.
+	 * @param	string[optional] $pageError		URL to call when unsubscribe was unsuccessful.
+	 * @param	string[optional] $messageError	Message to display when unsubscribe was unsuccessful.
+	 */
+	public function createAndAddActionBannerLink($id, $name, $action, $pageOk = null, $messageOk = null, $pageError = null, $messageError = null)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['bannerId'] = (string) $id;
+		$parameters['name'] = (string) $name;
+		$parameters['action'] = (string) $action;
+		if($pageOk !== null) $parameters['pageOK'] = (string) $pageOk;
+		if($messageOk !== null) $parameters['messageOK'] = (string) $messageOk;
+		if($pageError !== null) $parameters['pageError'] = (string) $pageError;
+		if($messageError !== null) $parameters['messageError'] = (string) $messageError;
+
+		// make the call
+		return $this->doCall('createAndAddActionBannerLink', $parameters);
 	}
 
 
-	public function createMirrorBannerLink()
+	/**
+	 * Creates a mirror link in the banner.
+	 *
+	 * @return	int				The order number of the url.
+	 * @param	string $id		The id of the banner.
+	 * @param	string $name	The name of the link.
+	 */
+	public function createMirrorBannerLink($id, $name)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['bannerId'] = (string) $id;
+		$parameters['name'] = (string) $name;
+
+		// make the call
+		return $this->doCall('createMirrorBannerLink', $parameters);
 	}
 
 
-	public function createAndAddMirrorBannerLink()
+	/**
+	 * Creates and adds a mirror link in the banner.
+	 *
+	 * @return	int				The order number of the url.
+	 * @param	string $id		The id of the banner.
+	 * @param	string $name	The name of the link.
+	 */
+	public function createAndAddMirrorBannerLink($id, $name)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['bannerId'] = (string) $id;
+		$parameters['name'] = (string) $name;
+
+		// make the call
+		return $this->doCall('createAndAddMirrorBannerLink', $parameters);
 	}
 
 
-	public function updateBannerLinkByField()
+	/**
+	 * Updates a banner link by field.
+	 *
+	 * @return	bool					true on success, false otherwise.
+	 * @param	string $id				The ID of the banner.
+	 * @param	int $order				The ordernumber of the url.
+	 * @param	string $field			The field.
+	 * @param	mixed[optional] $value	The new value.
+	 */
+	public function updateBannerLinkByField($id, $order, $field, $value = null)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['bannerId'] = (string) $id;
+		$parameters['order'] = (int) $order;
+		$parameters['field'] = (string) $field;
+		if($value !== null) $parameters['value'] = $value;
+
+		// make the call
+		return $this->doCall('updateBannerLinkByField', $parameters);
 	}
 
 
-	public function getBannerLinkByOrder()
+	/**
+	 * Retrieves a banner link by its order number.
+	 *
+	 * @return	array
+	 * @param	string $id	The ID of the banner.
+	 * @param	int $order	The order number.
+	 */
+	public function getBannerLinkByOrder($id, $order)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['bannerId'] = (string) $id;
+		$parameters['order'] = (int) $order;
+
+		// make the call
+		return $this->doCall('getBannerLinkByOrder', $parameters);
 	}
 
 
