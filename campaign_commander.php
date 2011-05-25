@@ -11,6 +11,7 @@
  * Changelog since 1.0.0
  * - modified the class to reflect the current API.
  * - implemented all Message-methods.
+ * - implemented all URL-management-methods.
  *
  *
  * License
@@ -971,7 +972,7 @@ class CampaignCommander
 
 // url management methods
 	/**
-	 * Creates a standard URL.
+	 * Creates a standard link for an email.
 	 *
 	 * @return	string				ID of the created URL.
 	 * @param	string $messageId	ID of the message.
@@ -980,64 +981,138 @@ class CampaignCommander
 	 */
 	public function createStandardUrl($messageId, $name, $url)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['messageId'] = (string) $messageId;
+		$parameters['name'] = (string) $name;
+		$parameters['url'] = (string) $url;
+
+		// make the call
+		return $this->doCall('createStandardUrl', $parameters);
 	}
-
-
-	public function createAndAddStandardUrl()
-	{
-		throw new CampaignCommanderException('Not implemented', 500);
-	}
-
 
 
 	/**
-	 * Creates an Unsubscribe URL.
+	 * Scans your message from top to bottom and replaces first occurrence of &&& with [EMV LINK]ORDER[EMV /LINK] (where ORDER is the standard link order number).
 	 *
-	 * @return	string					ID of the created URL.
-	 * @param	string $messageId		ID of the message.
-	 * @param	string $name			Name of the URL.
-	 * @param	string $pageOk			URL to call when unsubscribe was successful.
-	 * @param	string $messageOk		Message to display when unsubscribe was successful.
-	 * @param	string $pageError		URL to call when unsubscribe was unsuccessful.
-	 * @param	string $messageError	Message to display when unsubscribe was unsuccessful.
+	 * @return	int					The order number of the url.
+	 * @param	string $messageId	The ID for the message.
+	 * @param	string $name		The name of the URL.
+	 * @param	string $url			The url of the link.
 	 */
-	public function createUnsubscribeUrl($messageId, $name, $pageOk, $messageOk, $pageError, $messageError)
+	public function createAndAddStandardUrl($messageId, $name, $url)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
-	}
+		// build parameters
+		$parameters = array();
+		$parameters['messageId'] = (string) $messageId;
+		$parameters['name'] = (string) $name;
+		$parameters['url'] = (string) $url;
 
-
-	public function createAndAddUnsubscribeUrl()
-	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// make the call
+		return $this->doCall('createAndAddStandardUrl', $parameters);
 	}
 
 
 	/**
-	 * Creates an personalised URL.
+	 * Creates an unsubscribe link for an email.
 	 *
-	 * @return	string				ID of the created URL.
+	 * @return	string							ID of the created URL.
+	 * @param	string $messageId				ID of the message.
+	 * @param	string $name					Name of the URL.
+	 * @param	string[optional] $pageOk		URL to call when unsubscribe was successful.
+	 * @param	string[optional] $messageOk		Message to display when unsubscribe was successful.
+	 * @param	string[optional] $pageError		URL to call when unsubscribe was unsuccessful.
+	 * @param	string[optional] $messageError	Message to display when unsubscribe was unsuccessful.
+	 */
+	public function createUnsubscribeUrl($messageId, $name, $pageOk = null, $messageOk = null, $pageError = null, $messageError = null)
+	{
+		// build parameters
+		$parameters = array();
+		$parameters['messageId'] = (string) $messageId;
+		$parameters['name'] = (string) $name;
+		if($pageOk !== null) $parameters['pageOK'] = (string) $pageOk;
+		if($messageOk !== null) $parameters['messageOK'] = (string) $messageOk;
+		if($pageError !== null) $parameters['pageError'] = (string) $pageError;
+		if($messageError !== null) $parameters['messageError'] = (string) $messageError;
+
+		// make the call
+		return $this->doCall('createUnsubscribeUrl', $parameters);
+	}
+
+
+	/**
+	 * Scans your message from top to bottom and replaces the first occurrence of &&& with [EMV LINK]ORDER[EMV /LINK] (where ORDER is the unsubscribe link order number).
+	 *
+	 * @return	string							The order number of the url.
+	 * @param	string $messageId				ID of the message.
+	 * @param	string $name					Name of the URL.
+	 * @param	string[optional] $pageOk		URL to call when unsubscribe was successful.
+	 * @param	string[optional] $messageOk		Message to display when unsubscribe was successful.
+	 * @param	string[optional] $pageError		URL to call when unsubscribe was unsuccessful.
+	 * @param	string[optional] $messageError	Message to display when unsubscribe was unsuccessful.
+	 */
+	public function createAndAddUnsubscribeUrl($messageId, $name, $pageOk = null, $messageOk = null, $pageError = null, $messageError = null)
+	{
+		// build parameters
+		$parameters = array();
+		$parameters['messageId'] = (string) $messageId;
+		$parameters['name'] = (string) $name;
+		if($pageOk !== null) $parameters['pageOK'] = (string) $pageOk;
+		if($messageOk !== null) $parameters['messageOK'] = (string) $messageOk;
+		if($pageError !== null) $parameters['pageError'] = (string) $pageError;
+		if($messageError !== null) $parameters['messageError'] = (string) $messageError;
+
+		// make the call
+		return $this->doCall('createAndAddUnsubscribeUrl', $parameters);
+	}
+
+
+	/**
+	 * Creates an personalised link for an email
+	 *
+	 * @return	string				The order number of the URL.
 	 * @param	string $messageId	ID of the message.
 	 * @param	string $name		Name of the URL.
 	 * @param	string $url			URL to add.
 	 */
 	public function createPersonalisedUrl($messageId, $name, $url)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['messageId'] = (string) $messageId;
+		$parameters['name'] = (string) $name;
+		$parameters['url'] = (string) $url;
+
+		// make the call
+		return $this->doCall('createPersonalisedUrl', $parameters);
 	}
 
 
-	public function createAndAddPersonalisedUrl()
+	/**
+	 * Scans your message from top to bottom and replaces the first occirrence of &&& with [EMV LINK]ORDER[EMV /LINK] (where ORDER is the personalized link order number).
+	 *
+	 * @return	string				The order number of the URL.
+	 * @param	string $messageId	ID of the message.
+	 * @param	string $name		Name of the URL.
+	 * @param	string $url			URL to add.
+	 */
+	public function createAndAddPersonalisedUrl($messageId, $name, $url)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['messageId'] = (string) $messageId;
+		$parameters['name'] = (string) $name;
+		$parameters['url'] = (string) $url;
+
+		// make the call
+		return $this->doCall('createAndAddPersonalisedUrl', $parameters);
 	}
 
 
 	/**
 	 * Creates an update URL.
 	 *
-	 * @return	string					ID of the created URL.
+	 * @return	string					The order number of the URL.
 	 * @param	string $messageId		ID of the message.
 	 * @param	string $name			Name of the URL.
 	 * @param	mixed $parameters		Update parameters to apply to the member table (for a particular member).
@@ -1048,71 +1123,195 @@ class CampaignCommander
 	 */
 	public function createUpdateUrl($messageId, $name, $parameters, $pageOk, $messageOk, $pageError, $messageError)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['messageId'] = (string) $messageId;
+		$parameters['name'] = (string) $name;
+		$parameters['parameters'] = $parameters;
+		$parameters['pageOK'] = (string) $pageOk;
+		$parameters['messageOK'] = (string) $messageOk;
+		$parameters['pageError'] = (string) $pageError;
+		$parameters['messageError'] = (string) $messageError;
+
+		// make the call
+		return $this->doCall('createUpdateUrl', $parameters);
 	}
-
-
-	public function createAndAddUpdateUrl()
-	{
-		throw new CampaignCommanderException('Not implemented', 500);
-	}
-
-
-	public function createActionUrl()
-	{
-		throw new CampaignCommanderException('Not implemented', 500);
-	}
-
-
-	public function createdAndAddActionUrl()
-	{
-
-	}
-
 
 
 	/**
-	 * Creates a mirror URL
+	 * Scans your message from top to bottom and replaces the first occirrence of &&& with [EMV LINK]ORDER[EMV /LINK] (where ORDER is the update link order number).
 	 *
-	 * @return	string				ID of the created URL.
+	 * @return	string					The order number of the URL.
+	 * @param	string $messageId		ID of the message.
+	 * @param	string $name			Name of the URL.
+	 * @param	mixed $parameters		Update parameters to apply to the member table (for a particular member).
+	 * @param	string $pageOk			Url to call when unsubscribe was successful.
+	 * @param	string $messageOk		Message to display when unsubscribe was successful.
+	 * @param	string $pageError		Url to call when unsubscribe was unsuccessful.
+	 * @param	string $messageError	Message to display when unsubscribe was unssuccessful.
+	 */
+	public function createAndAddUpdateUrl($messageId, $name, $parameters, $pageOk, $messageOk, $pageError, $messageError)
+	{
+		// build parameters
+		$parameters = array();
+		$parameters['messageId'] = (string) $messageId;
+		$parameters['name'] = (string) $name;
+		$parameters['parameters'] = $parameters;
+		$parameters['pageOK'] = (string) $pageOk;
+		$parameters['messageOK'] = (string) $messageOk;
+		$parameters['pageError'] = (string) $pageError;
+		$parameters['messageError'] = (string) $messageError;
+
+		// make the call
+		return $this->doCall('createAndAddUpdateUrl', $parameters);
+	}
+
+
+	/**
+	 * Creates an action link for an email.
+	 *
+	 * @return									The order number of the URL.
+	 * @param	string $messageId				The ID of the message to which to add a URL.
+	 * @param	string $name					The name of the URL.
+	 * @param	string $action					The action to perform.
+	 * @param	string[optional] $pageOk		URL to call when unsubscribe was successful.
+	 * @param	string[optional] $messageOk		Message to display when unsubscribe was successful.
+	 * @param	string[optional] $pageError		URL to call when unsubscribe was unsuccessful.
+	 * @param	string[optional] $messageError	Message to display when unsubscribe was unsuccessful.
+	 */
+	public function createActionUrl($messageId, $name, $action, $pageOk = null, $messageOk = null, $pageError = null, $messageError = null)
+	{
+		// build parameters
+		$parameters = array();
+		$parameters['messageId'] = (string) $messageId;
+		$parameters['name'] = (string) $name;
+		$parameters['action'] = (string) $action;
+		if($pageOk !== null) $parameters['pageOK'] = (string) $pageOk;
+		if($messageOk !== null) $parameters['messageOK'] = (string) $messageOk;
+		if($pageError !== null) $parameters['pageError'] = (string) $pageError;
+		if($messageError !== null) $parameters['messageError'] = (string) $messageError;
+
+		// make the call
+		return $this->doCall('createActionUrl', $parameters);
+	}
+
+
+	/**
+	 * Scans your message from top to bottom and replaces the first occirrence of &&& with [EMV LINK]ORDER[EMV /LINK] (where ORDER is the action link order number).
+	 *
+	 * @return									The order number of the URL.
+	 * @param	string $messageId				The ID of the message to which to add a URL.
+	 * @param	string $name					The name of the URL.
+	 * @param	string $action					The action to perform.
+	 * @param	string[optional] $pageOk		URL to call when unsubscribe was successful.
+	 * @param	string[optional] $messageOk		Message to display when unsubscribe was successful.
+	 * @param	string[optional] $pageError		URL to call when unsubscribe was unsuccessful.
+	 * @param	string[optional] $messageError	Message to display when unsubscribe was unsuccessful.
+	 */
+	public function createdAndAddActionUrl($messageId, $name, $action, $pageOk = null, $messageOk = null, $pageError = null, $messageError = null)
+	{
+		// build parameters
+		$parameters = array();
+		$parameters['messageId'] = (string) $messageId;
+		$parameters['name'] = (string) $name;
+		$parameters['action'] = (string) $action;
+		if($pageOk !== null) $parameters['pageOK'] = (string) $pageOk;
+		if($messageOk !== null) $parameters['messageOK'] = (string) $messageOk;
+		if($pageError !== null) $parameters['pageError'] = (string) $pageError;
+		if($messageError !== null) $parameters['messageError'] = (string) $messageError;
+
+		// make the call
+		return $this->doCall('createdAndAddActionUrl', $parameters);
+	}
+
+
+	/**
+	 * Creates a mirror URL for an email.
+	 *
+	 * @return	string				The order number of the url.
 	 * @param	string $messageId	ID of the message.
 	 * @param	string $name		Name of the URL.
 	 */
 	public function createMirrorUrl($messageId, $name)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
-	}
+		// build parameters
+		$parameters = array();
+		$parameters['messageId'] = (string) $messageId;
+		$parameters['name'] = (string) $name;
 
-
-	public function createAndAddMirrorUrl()
-	{
-		throw new CampaignCommanderException('Not implemented', 500);
-	}
-
-
-	public function addShareLink()
-	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// make the call
+		return $this->doCall('createMirrorUrl', $parameters);
 	}
 
 
 	/**
-	 * Update an URL by field
+	 * Scans your message from top to bottom and automatically replaces the first occurrence of &&& with [EMV LINK]ORDER[EMV /LINK] (where ORDER is the mirror link order number).
+	 *
+	 * @return	string				The order number of the url.
+	 * @param	string $messageId	ID of the message.
+	 * @param	string $name		Name of the URL.
+	 */
+	public function createAndAddMirrorUrl($messageId, $name)
+	{
+		// build parameters
+		$parameters = array();
+		$parameters['messageId'] = (string) $messageId;
+		$parameters['name'] = (string) $name;
+
+		// make the call
+		return $this->doCall('createAndAddMirrorUrl', $parameters);
+	}
+
+
+	/**
+	 * Scans your message from top to bottom and automatically replaces the first occurrence of &&& with [EMV SHARE lang=xx] (where xx is the language identifier).
+	 *
+	 * @return	bool
+	 * @param	string $messageId				The ID of the message.
+	 * @param	bool $linkType					The link type, true for link, false for button.
+	 * @param	string[optional] $buttonUrl		The URL of the sharebutton.
+	 * @param	string[optional] $language		The language, possible values are: us, en, fr, de, nl, es, ru, sv, it, cn, tw, pt, br, da, ja, ko.
+	 */
+	public function addShareLink($messageId, $linkType, $buttonUrl = null, $language = null)
+	{
+		// @todo	validate
+		// build parameters
+		$parameters = array();
+		$parameters['messageId'] = (string) $messageId;
+		$parameters['linkType'] = (bool) $linkType;
+		if($buttonUrl !== null) $parameters['buttonUrl'] = (string) $buttonUrl;
+		if($language !== null) $parameters['language'] = (string) $language;
+
+		// make the call
+		return $this->doCall('addShareLink', $parameters);
+	}
+
+
+	/**
+	 * Update an URL by field.
 	 *
 	 * @return	bool				true if the update was successful.
 	 * @param	string $messageId	ID of the message.
 	 * @param	int $order			Order of the URL.
 	 * @param	string $field		Field to update.
-	 * @param	string $value		Value to set.
+	 * @param	mixed $value		Value to set.
 	 */
 	public function updateUrlByField($messageId, $order, $field, $value)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['messageId'] = (string) $messageId;
+		$parameters['order'] = (int) $order;
+		$parameters['field'] = (string) $field;
+		$parameters['value'] = $value;
+
+		// make the call
+		return $this->doCall('updateUrlByField', $parameters);
 	}
 
 
 	/**
-	 * Delete an URL
+	 * Delete an URL.
 	 *
 	 * @return	bool				true if the delete was successful.
 	 * @param	string $messageId	ID of the message.
@@ -1120,7 +1319,13 @@ class CampaignCommander
 	 */
 	public function deleteUrl($messageId, $order)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['messageId'] = (string) $messageId;
+		$parameters['order'] = (int) $order;
+
+		// make the call
+		return $this->doCall('deleteUrl', $parameters);
 	}
 
 
@@ -1133,7 +1338,13 @@ class CampaignCommander
 	 */
 	public function getUrlByOrder($messageId, $order)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['messageId'] = (string) $messageId;
+		$parameters['order'] = (int) $order;
+
+		// make the call
+		return $this->doCall('getUrlByOrder', $parameters);
 	}
 
 
