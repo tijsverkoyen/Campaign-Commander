@@ -13,7 +13,7 @@
  * - implemented all Message-methods.
  * - implemented all URL-management-methods.
  * - implemented all test-group-methods.
- *
+ * - implemented all segment-methods.
  *
  * License
  * Copyright (c), Tijs Verkoyen. All rights reserved.
@@ -1350,184 +1350,535 @@ class CampaignCommander
 
 
 // segment methods
-	public function segmentationCreateSegment()
+	/**
+	 * Creates a segment.
+	 *
+	 * @return	string							The ID of the created segment.
+	 * @param	string $name					The name of the segment.
+	 * @param	string $sampleType				The portion of the segment uses, possible values are: ALL, PERCENT, FIX.
+	 * @param	string[optional] $description	The description of the segment.
+	 * @param	float[optional] $sampleRate		The percentage/number of members from the segment.
+	 */
+	public function segmentationCreateSegment($name, $sampleType, $description = null, $sampleRate = null)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// @todo	validation
+		// build parameters
+		$parameters = array();
+		$parameters['name'] = (string) $name;
+		if($description !== null) $parameters['desc'] = (string) $description;
+		$parameters['sampleType'] = (string) $sampleType;
+		if($sampleRate !== null) $parameters['sampleRate'] = (float) $sampleRate;
+
+		// make the call
+		return $this->doCall('segmentationCreateSegment', $parameters);
 	}
 
 
-	public function segmentationDeleteSegment()
+	/**
+	 * Delete a segment
+	 *
+	 * @return	bool			true if successfull, false otherwise.
+	 * @param	string $id		The ID of the segment.
+	 */
+	public function segmentationDeleteSegment($id)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['difflistId'] = (string) $id;
+
+		// make the call
+		return $this->doCall('segmentationDeleteSegment', $parameters);
 	}
 
 
-	public function segmentationAddStringDemographicCriteriaByObj()
+	/**
+	 * Adds alphanumeric demographic criteria to a segment.
+	 *
+	 * @return	bool								true on success, false otherwise.
+	 * @param	array $stringDemographicCriteria	The criteria object.
+	 */
+	public function segmentationAddStringDemographicCriteriaByObj(array $stringDemographicCriteria)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['stringDemographicCriteria'] = $stringDemographicCriteria;
+
+		// make the call
+		return $this->doCall('segmentationAddStringDemographicCriteriaByObj', $parameters);
 	}
 
 
-	public function segmentationAddNumericDemographicCriteriaByObj()
+	/**
+	 * Adds numeric demographic criteria to a segment.
+	 *
+	 * @return	bool								true on success, false otherwise.
+	 * @param	array $numericDemographicCriteria	The criteria object.
+	 */
+	public function segmentationAddNumericDemographicCriteriaByObj(array $numericDemographicCriteria)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['numericDemographicCriteria'] = $numericDemographicCriteria;
+
+		// make the call
+		return $this->doCall('segmentationAddNumericDemographicCriteriaByObj', $parameters);
 	}
 
 
-	public function segmentationAddDateDemographicCriteriaByObj()
+	/**
+	 * Adds date demographic criteria to a segment.
+	 *
+	 * @return	bool								true on success, false otherwise.
+	 * @param	array $dateDemographicCriteria	The criteria object.
+	 */
+	public function segmentationAddDateDemographicCriteriaByObj(array $dateDemographicCriteria)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['dateDemographicCriteria'] = $dateDemographicCriteria;
+
+		// make the call
+		return $this->doCall('segmentationAddDateDemographicCriteriaByObj', $parameters);
 	}
 
 
-	public function segmentationAddCampaignActionCriteriaByObj()
+	/**
+	 * Adds campaign action criteria to a segment.
+	 *
+	 * @return	bool					true on success, false otherwise.
+	 * @param	array $actionCriteria	The criteria object.
+	 */
+	public function segmentationAddCampaignActionCriteriaByObj(array $actionCriteria)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['actionCriteria'] = $actionCriteria;
+
+		// make the call
+		return $this->doCall('segmentationAddCampaignActionCriteriaByObj', $parameters);
 	}
 
 
-	public function segmentationAddCampaignTrackableLinkCriteriaByObj()
+	/**
+	 * Adds campaign tracked link criteria to a segment.
+	 *
+	 * @return	bool							true on success, false otherwise.
+	 * @param	array $trackableLinkCriteria	The criteria object.
+	 */
+	public function segmentationAddCampaignTrackableLinkCriteriaByObj(array $trackableLinkCriteria)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['trackableLinkCriteria'] = $trackableLinkCriteria;
+
+		// make the call
+		return $this->doCall('segmentationAddCampaignTrackableLinkCriteriaByObj', $parameters);
 	}
 
 
-	public function segmentationAddSerieActionCriteriaByObj()
+	/**
+	 * Adds reflex campaign action criteria to a segment.
+	 *
+	 * @return	bool							true on success, false otherwise.
+	 * @param	array $actionCriteria	The criteria object.
+	 */
+	public function segmentationAddSerieActionCriteriaByObj(array $actionCriteria)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['actionCriteria'] = $actionCriteria;
+
+		// make the call
+		return $this->doCall('segmentationAddSerieActionCriteriaByObj', $parameters);
 	}
 
 
-	public function segmentationAddSerieTrackableLinkCriteriaByObj()
+	/**
+	 * Adds reflex campaign tracked link criteria to a segment.
+	 *
+	 * @return	bool							true on success, false otherwise.
+	 * @param	array $trackableLinkCriteria	The criteria object.
+	 */
+	public function segmentationAddSerieTrackableLinkCriteriaByObj(array $trackableLinkCriteria)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['trackableLinkCriteria'] = $trackableLinkCriteria;
+
+		// make the call
+		return $this->doCall('segmentationAddSerieTrackableLinkCriteriaByObj', $parameters);
 	}
 
 
-	public function segmentationAddSocialNetworkCriteriaByObj()
+	/**
+	 * Adds social criteria to a segment.
+	 *
+	 * @return	bool							true on success, false otherwise.
+	 * @param	array $socialNetworkCriteria	The criteria object.
+	 */
+	public function segmentationAddSocialNetworkCriteriaByObj(array $socialNetworkCriteria)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['socialNetworkCriteria'] = $socialNetworkCriteria;
+
+		// make the call
+		return $this->doCall('segmentationAddSocialNetworkCriteriaByObj', $parameters);
 	}
 
 
-	public function segmentationAddRecencyCriteriaByObj()
+	/**
+	 * Adds quick segment criteria to segment.
+	 *
+	 * @return	bool					true on success, false otherwise.
+	 * @param	array $recencyCriteria	The criteria object.
+	 */
+	public function segmentationAddRecencyCriteriaByObj(array $recencyCriteria)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['recencyCriteria'] = $recencyCriteria;
+
+		// make the call
+		return $this->doCall('segmentationAddRecencyCriteriaByObj', $parameters);
 	}
 
 
-	public function segmentationAddDataMartCriteriaByObj()
+	/**
+	 * Adds DataMart criteria to a segment.
+	 *
+	 * @return	bool					true on success, false otherwise.
+	 * @param	array $dataMartCriteria	The criteria object.
+	 */
+	public function segmentationAddDataMartCriteriaByObj(array $dataMartCriteria)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['dataMartCriteria'] = $dataMartCriteria;
+
+		// make the call
+		return $this->doCall('segmentationAddDataMartCriteriaByObj', $parameters);
 	}
 
 
-	public function segmentationGetSegmentById()
+	/**
+	 * Retrieves a segment.
+	 *
+	 * @return	array
+	 * @param	string $id	The ID of the segment.
+	 */
+	public function segmentationGetSegmentById($id)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['difflistId'] = (string) $id;
+
+		// make the call
+		return $this->doCall('segmentationGetSegmentById', $parameters);
 	}
 
 
-	public function segmentationGetSegmentList()
+	/**
+	 * Retrieves a list of segments.
+	 *
+	 * @return	array				A list of segmentation objects.
+	 * @param	int $page			The current page.
+	 * @param	int $itemsPerPage	The number of items per page.
+	 */
+	public function segmentationGetSegmentList($page, $itemsPerPage)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['page'] = (int) $page;
+		$parameters['nbItemsPerPage'] = (int) $itemsPerPage;
+
+		// make the call
+		return $this->doCall('segmentationGetSegmentList', $parameters);
 	}
 
 
-	public function segmentationGetSegmentCriterias()
+	/**
+	 * Get the criteria used in a segment.
+	 *
+	 * @return	array		A segmentation object
+	 * @param	string $id	The ID of the segment.
+	 */
+	public function segmentationGetSegmentCriterias($id)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['difflistId'] = (string) $id;
+
+		// make the call
+		return $this->doCall('segmentationGetSegmentCriterias', $parameters);
 	}
 
 
-	public function segmentationGetPersoFragList()
+	/**
+	 * Retrieves a list of DataMart segments
+	 *
+	 * @return	array
+	 * @param	int $page			The current page.
+	 * @param	int $itemsPerPage	The number of items per page.
+	 */
+	public function segmentationGetPersoFragList($page, $itemsPerPage)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['pageNumber'] = (int) $page;
+		$parameters['nbItemPerpage'] = (int) $itemsPerPage,
+
+		// make the call
+		return $this->doCall('segmentationGetPersoFragList', $parameters);
 	}
 
 
-	public function segmentationDeleteCriteria()
+	/**
+	 * Delete a criteria cell.
+	 *
+	 * @return	bool					true on success, false otherwise.
+	 * @param	string $id				The ID of the segment.
+	 * @param	int $orderCriteria		The ofder or the criteria.
+	 */
+	public function segmentationDeleteCriteria($id, $orderCriteria)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['difflistId'] = (string) $id;
+		$parameters['orderCriteria'] = (int) $orderCriteria;
+
+		// make the call
+		return $this->doCall('segmentationDeleteCriteria', $parameters);
 	}
 
 
-	public function segmentationUpdateSegment()
+	/**
+	 * Updates a segment.
+	 *
+	 * @return	bool							true on success, false otherwise
+	 * @param	string $id						The ID of the segment.
+	 * @param	string $name					The name of the segment.
+	 * @param	string $sampleType				The portion of the segment uses, possible values are: ALL, PERCENT, FIX.
+	 * @param	float[optional] $sampleRate		The percentage/number of members from the segment.
+	 */
+	public function segmentationUpdateSegment($id, $name, $sampleType, $sampleRate = null)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// @todo	validation
+		// build parameters
+		$parameters = array();
+		$parameters['Id'] = (string) $id;
+		$parameters['name'] = (string) $name;
+		$parameters['sampleType'] = (string) $sampleType;
+		if($sampleRate !== null) $parameters['sampleRate'] = (float) $sampleRate;
+
+		// make the call
+		return $this->doCall('segmentationUpdateSegment', $parameters);
 	}
 
 
-	public function segmentationUpdateStringDemographicCriteriaByObj()
+	/**
+	 * Updates alphanumeric demographic criteria to a segment.
+	 *
+	 * @return	bool								true on success, false otherwise.
+	 * @param	array $stringDemographicCriteria	The criteria object.
+	 */
+	public function segmentationUpdateStringDemographicCriteriaByObj(array $stringDemographicCriteria)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['stringDemographicCriteria'] = $stringDemographicCriteria;
+
+		// make the call
+		return $this->doCall('segmentationUpdateStringDemographicCriteriaByObj', $parameters);
 	}
 
 
-	public function segmentationUpdateNumericDemographicCriteriaByObj()
+	/**
+	 * Updates numeric demographic criteria to a segment.
+	 *
+	 * @return	bool								true on success, false otherwise.
+	 * @param	array $numericDemographicCriteria	The criteria object.
+	 */
+	public function segmentationUpdateNumericDemographicCriteriaByObj(array $numericDemographicCriteria)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['numericDemographicCriteria'] = $numericDemographicCriteria;
+
+		// make the call
+		return $this->doCall('segmentationUpdateNumericDemographicCriteriaByObj', $parameters);
 	}
 
 
-	public function segmentationUpdateDateDemographicCriteriaByObj()
+	/**
+	 * Updates date demographic criteria to a segment.
+	 *
+	 * @return	bool								true on success, false otherwise.
+	 * @param	array $dateDemographicCriteria	The criteria object.
+	 */
+	public function segmentationUpdateDateDemographicCriteriaByObj(array $dateDemographicCriteria)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['dateDemographicCriteria'] = $dateDemographicCriteria;
+
+		// make the call
+		return $this->doCall('segmentationUpdateDateDemographicCriteriaByObj', $parameters);
 	}
 
 
-	public function segmentationUpdateCampaignActionCriteriaByObj()
+	/**
+	 * Updates campaign action criteria to a segment.
+	 *
+	 * @return	bool					true on success, false otherwise.
+	 * @param	array $actionCriteria	The criteria object.
+	 */
+	public function segmentationUpdateCampaignActionCriteriaByObj(array $actionCriteria)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['actionCriteria'] = $actionCriteria;
+
+		// make the call
+		return $this->doCall('segmentationUpdateCampaignActionCriteriaByObj', $parameters);
 	}
 
 
-	public function segmentationUpdateCampaignTrackableLinkCriteriaByObj()
+	/**
+	 * Updates campaign tracked link criteria to a segment.
+	 *
+	 * @return	bool							true on success, false otherwise.
+	 * @param	array $trackableLinkCriteria	The criteria object.
+	 */
+	public function segmentationUpdateCampaignTrackableLinkCriteriaByObj(array $trackableLinkCriteria)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['trackableLinkCriteria'] = $trackableLinkCriteria;
+
+		// make the call
+		return $this->doCall('segmentationUpdateCampaignTrackableLinkCriteriaByObj', $parameters);
 	}
 
 
-	public function segmentationUpdateSerieActionCriteriaByObj()
+	/**
+	 * Updates reflex campaign action criteria to a segment.
+	 *
+	 * @return	bool							true on success, false otherwise.
+	 * @param	array $actionCriteria	The criteria object.
+	 */
+	public function segmentationUpdateSerieActionCriteriaByObj(array $actionCriteria)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['actionCriteria'] = $actionCriteria;
+
+		// make the call
+		return $this->doCall('segmentationUpdateSerieActionCriteriaByObj', $parameters);
 	}
 
 
-	public function segmentationUpdateSerieTrackableLinkCriteriaByObj()
+	/**
+	 * Updates reflex campaign tracked link criteria to a segment.
+	 *
+	 * @return	bool							true on success, false otherwise.
+	 * @param	array $trackableLinkCriteria	The criteria object.
+	 */
+	public function segmentationUpdateSerieTrackableLinkCriteriaByObj(array $trackableLinkCriteria)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['trackableLinkCriteria'] = $trackableLinkCriteria;
+
+		// make the call
+		return $this->doCall('segmentationUpdateSerieTrackableLinkCriteriaByObj', $parameters);
 	}
 
 
-	public function segmentationUpdateSocialNetworkCriteriaByObj()
+	/**
+	 * Updates social criteria to a segment.
+	 *
+	 * @return	bool							true on success, false otherwise.
+	 * @param	array $socialNetworkCriteria	The criteria object.
+	 */
+	public function segmentationUpdateSocialNetworkCriteriaByObj(array $socialNetworkCriteria)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['socialNetworkCriteria'] = $socialNetworkCriteria;
+
+		// make the call
+		return $this->doCall('segmentationUpdateSocialNetworkCriteriaByObj', $parameters);
 	}
 
 
-	public function segmentationUpdateRecencyCriteriaByObj()
+	/**
+	 * Updates quick segment criteria to segment.
+	 *
+	 * @return	bool					true on success, false otherwise.
+	 * @param	array $recencyCriteria	The criteria object.
+	 */
+	public function segmentationUpdateRecencyCriteriaByObj(array $recencyCriteria)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['recencyCriteria'] = $recencyCriteria;
+
+		// make the call
+		return $this->doCall('segmentationUpdateRecencyCriteriaByObj', $parameters);
 	}
 
 
-	public function segmentationUpdateDataMartCriteriaByObj()
+	/**
+	 * Updates DataMart criteria to a segment.
+	 *
+	 * @return	bool					true on success, false otherwise.
+	 * @param	array $dataMartCriteria	The criteria object.
+	 */
+	public function segmentationUpdateDataMartCriteriaByObj(array $dataMartCriteria)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['dataMartCriteria'] = $dataMartCriteria;
+
+		// make the call
+		return $this->doCall('segmentationUpdateDataMartCriteriaByObj', $parameters);
 	}
 
 
-	public function segmentationCount()
+	/**
+	 * Counts the total number of members in a segment (including duplicated members).
+	 *
+	 * @return	int			The number of members.
+	 * @param	string $id	The ID of the segment.
+	 */
+	public function segmentationCount($id)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+
+		// make the call
+		return $this->doCall('segmentationCount', $parameters);
 	}
 
 
-	public function segmentationDistinctCount()
+	/**
+	 * Counts the total number of distinct members in a segment (duplicate members are removed).
+	 *
+	 * @return	int			The number of members.
+	 * @param	string $id	The ID of the segment.
+	 */
+	public function segmentationDistinctCount($id)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+
+		// make the call
+		return $this->doCall('segmentationDistinctCount', $parameters);
 	}
+
 
 // campaign methods
 	/**
@@ -1865,8 +2216,6 @@ class CampaignCommander
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
-
-
 
 
 // banner link management methods
