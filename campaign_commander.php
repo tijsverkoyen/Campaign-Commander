@@ -15,6 +15,7 @@
  * - implemented all test-group-methods.
  * - implemented all segment-methods.
  * - implemented all campaign-methods.
+ * - implemented all banner-methods.
  *
  * License
  * Copyright (c), Tijs Verkoyen. All rights reserved.
@@ -752,7 +753,7 @@ class CampaignCommander
 		$parameters['messageId'] = (string) $messageId;
 
 		// make the call
-		return $this->doCall(getSmsMessagePreview'', $parameters);
+		return $this->doCall('getSmsMessagePreview', $parameters);
 	}
 
 
@@ -1627,7 +1628,7 @@ class CampaignCommander
 		// build parameters
 		$parameters = array();
 		$parameters['pageNumber'] = (int) $page;
-		$parameters['nbItemPerpage'] = (int) $itemsPerPage,
+		$parameters['nbItemPerpage'] = (int) $itemsPerPage;
 
 		// make the call
 		return $this->doCall('segmentationGetPersoFragList', $parameters);
@@ -2249,111 +2250,334 @@ class CampaignCommander
 
 
 // banner methods
-	public function createBanner()
+	/**
+	 * Creates a banner.
+	 *
+	 * @return	string							The ID of the banner.
+	 * @param	string $name					The name of the banner.
+	 * @param	string $contentType				The content type of the banner, possible values are: TEXT or HTML.
+	 * @param	string[optional] $description	The description.
+	 * @param	string[optional] $content		The content of the banner.
+	 */
+	public function createBanner($name, $contentType, $description = null, $content = null)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// @todo	validate
+		// build parameters
+		$parameters = array();
+		$parameters['name'] = (string) $name;
+		if($description !== null) $parameters['description'] = (string) $description;
+		$parameters['contentType'] = (string) $contentType;
+		if($content !== null) $parameters['content'] = '<!CDATA[' . $content . ']]>';
+
+		// make the call
+		return $this->doCall('createBanner', $parameters);
 	}
 
 
-	public function createBannerByObj()
+	/**
+	 * Creates a banner.
+	 *
+	 * @return	string			The ID of the banner.
+	 * @param	array $banner	The banner.
+	 */
+	public function createBannerByObj(array $banner)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['banner'] = $banner;
+
+		// make the call
+		return $this->doCall('createBannerByObj', $parameters);
 	}
 
 
-	public function deleteBanner()
+	/**
+	 * Deletes a banner
+	 *
+	 * @return	bool			true on success, false otherwise.
+	 * @param	string $id		The ID of the banner.
+	 */
+	public function deleteBanner($id)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+
+		// make the call
+		return $this->doCall('deleteBanner', $parameters);
 	}
 
 
-	public function updateBanner()
+	/**
+	 * Updates a banner by field and value.
+	 *
+	 * @return	bool					true on success, false otherwise.
+	 * @param	string $id				The ID of the banner.
+	 * @param	string $field			The field
+	 * @param	mixed[optional] $value	The new value.
+	 */
+	public function updateBanner($id, $field, $value = null)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+		$parameters['field'] = (string) $field;
+		if($value !== null) $parameters['value'] = $value;
+
+		// make the call
+		return $this->doCall('updateBanner', $parameters);
 	}
 
 
-	public function updateBannerByObj()
+	/**
+	 * Updates a banner.
+	 *
+	 * @return	bool			true on success, false otherwise.
+	 * @param	array $banner	The banner.
+	 */
+	public function updateBannerByObj(array $banner)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['banner'] = $banner;
+
+		// make the call
+		return $this->doCall('updateBannerByObj', $parameters);
 	}
 
 
-	public function cloneBanner()
+	/**
+	 * Clones a banner.
+	 *
+	 * @return	string 			The ID of the new banner.
+	 * @param	string $id		The ID of the banner.
+	 * @param	string $name	The new name of the banner.
+	 */
+	public function cloneBanner($id, $name)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+		$parameters['newName'] = (string) $name;
+
+		// make the call
+		return $this->doCall('cloneBanner', $parameters);
 	}
 
 
-	public function getBannerPreview()
+	/**
+	 * Displays a preview of a banner.
+	 *
+	 * @return	string		The formatted preview of a banner.
+	 * @param	string $id	The ID of the banner.
+	 */
+	public function getBannerPreview($id)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+
+		// make the call
+		return $this->doCall('getBannerPreview', $parameters);
 	}
 
 
-	public function getBanner()
+	/**
+	 * Retrieves a banner.
+	 *
+	 * @return	array		The banner
+ 	 * @param	string $id	The ID of the banner.
+	 */
+	public function getBanner($id)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+
+		// make the call
+		return $this->doCall('getBanner', $parameters);
 	}
 
 
-	public function getBannersByField()
+	/**
+	 * Retrieves a list of banners that contain the given value in a field.
+	 *
+	 * @return	array					The IDs of the banners.
+	 * @param	string $field			The field of the banner
+	 * @param	mixed[optional] $value	The value.
+	 * @param	int $limit				The size of the list (between 1 and 1000).
+	 */
+	public function getBannersByField($field, $value, $limit)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// @todo	validate
+		// build parameters
+		$parameters = array();
+		$parameters['field'] = (string) $field;
+		if($value !== null) $parameters['value'] = $value;
+		$parameters['limit'] = (int) $limit;
+
+		// make the call
+		return $this->doCall('getBannersByField', $parameters);
 	}
 
 
-	public function getBannersByPeriod()
+	/**
+	 * Retrieves a list of banners from a given period.
+	 *
+	 * @return	array			The IDs of the banners.
+	 * @param	int $dateStart	The start date of the period.
+	 * @param	int $dateEnd	The end date of the period.
+	 */
+	public function getBannersByPeriod($dateStart, $dateEnd)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['dateBegin'] = date('Y-m-d H:i:s', (int) $dateStart);
+		$parameters['dateEnd'] = date('Y-m-d H:i:s', (int) $dateEnd);
+
+		// make the call
+		return $this->doCall('getBannersByPeriod', $parameters);
 	}
 
 
-	public function getLastBanners()
+	/**
+	 * Retrieves the list of the last banners.
+	 *
+	 * @return	array		The IDs of the banners.
+	 * @param	int $limit	The size of the list (between 1 and 1000).
+	 */
+	public function getLastBanners($limit)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// @todo	validate
+		// build parameters
+		$parameters = array();
+		$parameters['limit'] = (int) $limit;
+
+		// make the call
+		return $this->doCall('getLastBanners', $parameters);
 	}
 
 
-	public function trackAllBannerLinks()
+	/**
+	 * Activates tracking for all untracked banner links and saves the banner.
+	 *
+	 * @return	int				The last tracked link's order.
+	 * @param	string $id		The ID of the banner.
+	 */
+	public function trackAllBannerLinks($id)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+
+		// make the call
+		return $this->doCall('trackAllBannerLinks', $parameters);
 	}
 
 
-	public function untrackAllBannerLinks()
+	/**
+	 * untracks all the banner links.
+	 *
+	 * @return	int				The last tracked link's order.
+	 * @param	string $id		The ID of the banner.
+	 */
+	public function untrackAllBannerLinks($id)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+
+		// make the call
+		return $this->doCall('untrackAllBannerLinks', $parameters);
 	}
 
 
-	public function trackBannerLinkByPosition()
+	/**
+	 * Tracks the banner link through its position
+	 *
+	 * @return	int				The order number of the url.
+	 * @param	string $id		The ID of the banner.
+	 * @param	int $position	The position of the link in the banner.
+	 */
+	public function trackBannerLinkByPosition($id, $position)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+		$parameters['position'] = (int) $position;
+
+		// make the call
+		return $this->doCall('trackBannerLinkByPosition', $parameters);
 	}
 
 
-	public function  untrackBannerLinkByOrder()
+	/**
+	 * Untracks a link in the banner by its order.
+	 *
+	 * @return	bool			true on success, false otherwise.
+	 * @param	string $id		The ID od the banner.
+	 * @param	int $order		The order number of the url.
+	 */
+	public function untrackBannerLinkByOrder($id, $order)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+		$parameters['order'] = (int) $order;
+
+		// make the call
+		return $this->doCall('untrackBannerLinkByOrder', $parameters);
 	}
 
 
-	public function getAllBannerTrackedLinks()
+	/**
+	 * Retrieves a list of all the tracked links in a banner.
+	 *
+	 * @return	array		List of the tracked links.
+	 * @param	string $id	The ID of the banner.
+	 */
+	public function getAllBannerTrackedLinks($id)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+
+		// make the call
+		return $this->doCall('getAllBannerTrackedLinks', $parameters);
 	}
 
 
-	public function getAllUnusedBannerTrackedLinks()
+	/**
+	 * Retrieves a list of all the unused tracked links in a banner.
+	 *
+	 * @return	array		List of the unused tracked links.
+	 * @param	string $id	The ID of the banner.
+	 */
+	public function getAllUnusedBannerTrackedLinks($id)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+
+		// make the call
+		return $this->doCall('getAllUnusedBannerTrackedLinks', $parameters);
 	}
 
 
-	public function getAllBannerTrackableLinks()
+	/**
+	 * Retrieves a list of all the trackable links in a banner.
+	 *
+	 * @return	array		List of the trackable links.
+	 * @param	string $id	The ID of the banner.
+	 */
+	public function getAllBannerTrackableLinks($id)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+
+		// make the call
+		return $this->doCall('getAllBannerTrackableLinks', $parameters);
 	}
 
 
