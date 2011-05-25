@@ -14,6 +14,7 @@
  * - implemented all URL-management-methods.
  * - implemented all test-group-methods.
  * - implemented all segment-methods.
+ * - implemented all campaign-methods.
  *
  * License
  * Copyright (c), Tijs Verkoyen. All rights reserved.
@@ -1913,7 +1914,7 @@ class CampaignCommander
 
 
 	/**
-	 * Create a campaign.
+	 * Create a campaign with analytics activated.
 	 *
 	 * @return	string								The ID of the campaign.
 	 * @param	string $name						Name of the campaign.
@@ -1951,7 +1952,12 @@ class CampaignCommander
 	 */
 	public function createCampaignByObj(array $campaign)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['campaign'] = $campaign;
+
+		// make the call
+		return $this->doCall('createCampaignByObj', $parameters);
 	}
 
 
@@ -1963,21 +1969,33 @@ class CampaignCommander
 	 */
 	public function deleteCampaign($id)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+
+		// make the call
+		return $this->doCall('deleteCampaign', $parameters);
 	}
 
 
 	/**
 	 * Update a campaign.
 	 *
-	 * @return	bool				true of update was successful.
-	 * @param	string $id			The ID of the campaign.
-	 * @param	string $field		Field to update.
-	 * @param	string $value		Value to set.
+	 * @return	bool			true of update was successful.
+	 * @param	string $id		The ID of the campaign.
+	 * @param	string $field	Field to update.
+	 * @param	mixed $value	Value to set.
 	 */
 	public function updateCampaign($id, $field, $value)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+		$parameters['field'] = (string) $field;
+		$parameters['value'] = $value;
+
+		// make the call
+		return $this->doCall('updateCampaign', $parameters);
 	}
 
 
@@ -1989,7 +2007,12 @@ class CampaignCommander
 	 */
 	public function updateCampaignByObj(array $campaign)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['campaign'] = $campaign;
+
+		// make the call
+		return $this->doCall('updateCampaignByObj', $parameters);
 	}
 
 
@@ -2001,7 +2024,12 @@ class CampaignCommander
 	 */
 	public function postCampaign($id)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+
+		// make the call
+		return $this->doCall('postCampaign', $parameters);
 	}
 
 
@@ -2013,7 +2041,12 @@ class CampaignCommander
 	 */
 	public function unpostCampaign($id)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+
+		// make the call
+		return $this->doCall('unpostCampaign', $parameters);
 	}
 
 
@@ -2025,7 +2058,12 @@ class CampaignCommander
 	 */
 	public function getCampaign($id)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+
+		// make the call
+		return $this->doCall('getCampaign', $parameters);
 	}
 
 
@@ -2034,24 +2072,56 @@ class CampaignCommander
 	 *
 	 * @return	array			List of IDS of campaigns matching the search.
 	 * @param	string $field	Field to update.
-	 * @param	string $value	Value to set in that field.
-	 * @param	string $limit	Maximum number of elements to retrieve.
+	 * @param	mixed $value	Value to set in that field.
+	 * @param	int $limit		Maximum number of elements to retrieve.
 	 */
 	public function getCampaignsByField($field, $value, $limit)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['field'] = (string) $field;
+		$parameters['value'] = $value;
+		$parameters['limit'] = (int) $limit;
+
+		// make the call
+		return $this->doCall('getCampaignsByField', $parameters);
 	}
 
 
-	public static function getCampaignsByStatus()
+	/**
+	 * Retrieves a list of campaign having a specified status
+	 *
+	 * @return	array			The list of campaign IDs matching the status.
+	 * @param	string $status	Status to match, possible values: EDITABLE, QUEUED, RUNNING, PAUSES, COMPLETED, FAILED, KILLED.
+	 */
+	public static function getCampaignsByStatus($status)
 	{
+		// @todo	validate
+		// build parameters
+		$parameters = array();
+		$parameters['status'] = (string) $status;
 
+		// make the call
+		return $this->doCall('getCampaignsByStatus', $parameters);
 	}
 
 
-	public static function getCampaignsByPeriod()
+	/**
+	 * Retrieves a list of campaigns from a specific period.
+	 *
+	 * @return	array			The list of campaign IDs matching the status.
+	 * @param	int $dateBegin	The start date of the period.
+	 * @param	int $dateEnd	The end date of the period.
+	 */
+	public static function getCampaignsByPeriod($dateBegin, $dateEnd)
 	{
+		// build parameters
+		$parameters = array();
+		$parameters['dateBegin'] = date('Y-m-d H:i:s', (int) $dateBegin);
+		$parameters['dateEnd'] = date('Y-m-d H:i:s', (int) $dateEnd);
 
+		// make the call
+		return $this->doCall('getCampaignsByPeriod', $parameters);
 	}
 
 
@@ -2063,7 +2133,12 @@ class CampaignCommander
 	 */
 	public function getCampaignStatus($id)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+
+		// make the call
+		return $this->doCall('getCampaignStatus', $parameters);
 	}
 
 
@@ -2075,37 +2150,101 @@ class CampaignCommander
 	 */
 	public function getLastCampaigns($limit)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['limit'] = (int) $limit;
+
+		// make the call
+		return $this->doCall('getLastCampaigns', $parameters);
 	}
 
 
-	public function testCampaignByGroup()
+	/**
+	 * Sends a test campaign to a group of members.
+	 *
+	 * @return	bool				true if it was successfull, false otherwise.
+	 * @param	string $id			The ID of the campaign.
+	 * @param	string $groupId		The ID of the group to whom to send the test.
+	 */
+	public function testCampaignByGroup($id, $groupId)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+		$parameters['groupId'] = (string) $groupId;
+
+		// make the call
+		return $this->doCall('testCampaignByGroup', $parameters);
 	}
 
 
-	public function testCampaignByMember()
+	/**
+	 * Sends a test campaign to a member.
+	 *
+	 * @return	bool				true if it was successfull, false otherwise.
+	 * @param	string $id			The ID of the campaign.
+	 * @param	string $memberId	The ID of the member to whom to send the test.
+	 */
+	public function testCampaignByMember($id, $memberId)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+		$parameters['memberId'] = (string) $memberId;
+
+		// make the call
+		return $this->doCall('testCampaignByMember', $parameters);
 	}
 
 
-	public function pauseCampaign()
+	/**
+	 * Pause a running campaign.
+	 *
+	 * @return	bool				true if it was successfull, false otherwise.
+	 * @param	string $id			The ID of the campaign.
+	 */
+	public function pauseCampaign($id)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+
+		// make the call
+		return $this->doCall('pauseCampaign', $parameters);
 	}
 
 
-	public function unpauseCampaign()
+	/**
+	 * Unpauses a paused campaign.
+	 *
+	 * @return	bool				true if it was successfull, false otherwise.
+	 * @param	string $id			The ID of the campaign.
+	 */
+	public function unpauseCampaign($id)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+
+		// make the call
+		return $this->doCall('unpauseCampaign', $parameters);
 	}
 
 
-	public function getCampaignSnapshotReport()
+	/**
+	 * Retrieves a snapshot report.
+	 *
+	 * @return	array			The report data.
+	 * @param	string $id		The id of the campaign.
+	 */
+	public function getCampaignSnapshotReport($id)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['campaignId'] = (string) $id;
+
+		// make the call
+		return $this->doCall('getCampaignSnapshotReport', $parameters);
 	}
 
 
