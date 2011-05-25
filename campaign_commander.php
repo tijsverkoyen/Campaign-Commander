@@ -12,6 +12,7 @@
  * - modified the class to reflect the current API.
  * - implemented all Message-methods.
  * - implemented all URL-management-methods.
+ * - implemented all test-group-methods.
  *
  *
  * License
@@ -1953,52 +1954,139 @@ class CampaignCommander
 	}
 
 
-// test group
-	public function createTestGroup()
+// test group methods
+	/**
+	 * Creates a test group of members.
+	 *
+	 * @return	string			The ID of the newly created test group.
+	 * @param	string $name	The name of the test group.
+	 */
+	public function createTestGroup($name)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['Name'] = (string) $name;
+
+		// make the call
+		return $this->doCall('createTestGroup', $parameters);
 	}
 
 
-	public function createTestGroupByObj()
+	/**
+	 * Creates a test group.
+	 *
+	 * @return	string				The ID of the created test group.
+	 * @param	array $testGroup	The test group object.
+	 */
+	public function createTestGroupByObj(array $testGroup)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['testGroup'] = $testGroup;
+
+		// make the call
+		return $this->doCall('createTestGroupByObj', $parameters);
 	}
 
 
-	public function addTestMember()
+	/**
+	 * Adds a member to a test group.
+	 *
+	 * @return	bool				true if it was successfull, false otherwise.
+	 * @param	string $memberId	The ID of the member to add.
+	 * @param	string $groupId		The ID of the group to which to add the member.
+	 */
+	public function addTestMember($memberId, $groupId)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['memberId'] = (string) $memberId;
+		$parameters['groupId'] = (string) $groupId;
+
+		// make the call
+		return $this->doCall('addTestMember', $parameters);
 	}
 
 
-	public function removeTestMember()
+	/**
+	 * Removes a member from a test group
+	 *
+	 * @return	bool				true if it was successfull, false otherwise.
+	 * @param	string $memberId	The ID of the member to add.
+	 * @param	string $groupId		The ID of the group to which to add the member.
+	 */
+	public function removeTestMember($memberId, $groupId)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['memberId'] = (string) $memberId;
+		$parameters['groupId'] = (string) $groupId;
+
+		// make the call
+		return $this->doCall('removeTestMember', $parameters);
 	}
 
 
-	public function deleteTestGroup()
+	/**
+	 * Deletes a test group.
+	 *
+	 * @return	bool				true if it was successfull, false otherwise.
+	 * @param	string $groupId		The ID of the group to which to add the member.
+	 */
+	public function deleteTestGroup($groupId)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['groupId'] = (string) $groupId;
+
+		// make the call
+		return $this->doCall('deleteTestGroup', $parameters);
 	}
 
 
-	public function updateTestGroupByObj()
+	/**
+	 * Updates a test group.
+	 *
+	 * @return	bool				true if it was successfull, false otherwise.
+	 * @param	array $testGroup	The test group object.
+	 */
+	public function updateTestGroupByObj(array $testGroup)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['testGroup'] = $testGroup;
+
+		// make the call
+		return $this->doCall('updateTestGroupByObj', $parameters);
 	}
 
 
-	public function getTestGroup()
+	/**
+	 * Retrieves the list of members in a test group.
+	 *
+	 * @return	array				The list of member ID's in that group
+	 * @param	string $groupId		The ID fo the group.
+	 */
+	public function getTestGroup($groupId)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['groupId'] = (string) $groupId;
+
+		// make the call
+		return $this->doCall('getTestGroup', $parameters);
 	}
 
 
+	/**
+	 * Retrieves a list of test groups.
+	 *
+	 * @return	array	The list of groups IDs.
+	 */
 	public function getClientTestGroups()
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// make the call
+		return $this->doCall('getClientTestGroups');
 	}
 }
 
