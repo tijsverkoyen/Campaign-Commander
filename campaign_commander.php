@@ -548,7 +548,7 @@ class CampaignCommander
 	{
 		// build parameters
 		$parameters = array();
-		$parameters['id'] = $message;
+		$parameters['id'] = $id;
 
 		// make the call
 		return $this->doCall('deleteMessage', $parameters);
@@ -569,7 +569,7 @@ class CampaignCommander
 		$parameters = array();
 		$parameters['id'] = (string) $id;
 		$parameters['field'] = (string) $field;
-		$parameters['value'] = $mixed;
+		$parameters['value'] = $value;
 
 		// make the call
 		return $this->doCall('updateMessage', $parameters);
@@ -1902,7 +1902,7 @@ class CampaignCommander
 		$parameters = array();
 		$parameters['name'] = (string) $name;
 		if($description !== null) $parameters['desc'] = (string) $description;
-		$parameters['sendDate'] = date('Y-m-d H:i:s', (int) $sendingDate);
+		$parameters['sendDate'] = date('Y-m-d H:i:s', (int) $sendDate);
 		$parameters['messageId'] = (string) $messageId;
 		$parameters['mailingListId'] = (string) $mailingListId;
 		$parameters['notifProgress'] = (bool) $notifProgress;
@@ -1933,7 +1933,7 @@ class CampaignCommander
 		$parameters = array();
 		$parameters['name'] = (string) $name;
 		if($description !== null) $parameters['desc'] = (string) $description;
-		$parameters['sendDate'] = date('Y-m-d H:i:s', (int) $sendingDate);
+		$parameters['sendDate'] = date('Y-m-d H:i:s', (int) $sendDate);
 		$parameters['messageId'] = (string) $messageId;
 		$parameters['mailingListId'] = (string) $mailingListId;
 		$parameters['notifProgress'] = (bool) $notifProgress;
