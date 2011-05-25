@@ -8,6 +8,11 @@
  * The class is documented in the file itself. If you find any bugs help me out and report them. Reporting can be done by sending an email to php-campaign-commander-member-bugs[at]verkoyen[dot]eu.
  * If you report a bug, make sure you give me enough information (include your code).
  *
+ * Changelog since 1.0.0
+ * - modified the class to reflect the current API.
+ * - implemented all Message-methods.
+ *
+ *
  * License
  * Copyright (c), Tijs Verkoyen. All rights reserved.
  *
@@ -20,7 +25,7 @@
  * This software is provided by the author "as is" and any express or implied warranties, including, but not limited to, the implied warranties of merchantability and fitness for a particular purpose are disclaimed. In no event shall the author be liable for any direct, indirect, incidental, special, exemplary, or consequential damages (including, but not limited to, procurement of substitute goods or services; loss of use, data, or profits; or business interruption) however caused and on any theory of liability, whether in contract, strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this software, even if advised of the possibility of such damage.
  *
  * @author			Tijs Verkoyen <php-campaign-commander-member@verkoyen.eu>
- * @version			1.0.0
+ * @version			1.1.0
  *
  * @copyright		Copyright (c), Tijs Verkoyen. All rights reserved.
  * @license			BSD License
@@ -31,10 +36,10 @@ class CampaignCommander
 	const DEBUG = false;
 
 	// URL for the api
-	const WSDL_URL = 'http://emvapi.emv3.com/apiccmd/services/CcmdService?wsdl';
+	const WSDL_URL = 'apiccmd/services/CcmdService?wsdl';
 
 	// current version
-	const VERSION = '1.0.0';
+	const VERSION = '1.1.0';
 
 
 	/**
@@ -59,6 +64,14 @@ class CampaignCommander
 	 * @var	string
 	 */
 	private $password;
+
+
+	/**
+	 * The server to use
+	 *
+	 * @var	string
+	 */
+	private $server = 'http://emvapi.emv3.com';
 
 
 	/**
@@ -102,11 +115,12 @@ class CampaignCommander
 	 * @param	string $password	The password.
 	 * @param	string $key			Manager Key copied from the CCMD web application.
 	 */
-	public function __construct($login, $password, $key)
+	public function __construct($login, $password, $key, $server = null)
 	{
 		$this->setLogin($login);
 		$this->setPassword($password);
 		$this->setKey($key);
+		if($server !== null) $this->setServer($server);
 	}
 
 
@@ -159,7 +173,7 @@ class CampaignCommander
 							 'user_agent' => $this->getUserAgent());
 
 			// create client
-			$this->soapClient = new SoapClient(self::WSDL_URL, $options);
+			$this->soapClient = new SoapClient($this->getServer() . '/' . self::WSDL_URL, $options);
 
 			// build login parameters
 			$loginParameters['login'] = $this->getLogin();
@@ -288,6 +302,17 @@ class CampaignCommander
 
 
 	/**
+	 * Get the server
+	 *
+	 * @return	string
+	 */
+	private function getServer()
+	{
+		return $this->server;
+	}
+
+
+	/**
 	 * Get the timeout that will be used
 	 *
 	 * @return	int
@@ -343,6 +368,18 @@ class CampaignCommander
 	private function setPassword($password)
 	{
 		$this->password = (string) $password;
+	}
+
+
+	/**
+	 * Set the server that has to be used.
+	 *
+	 * @return	void
+	 * @param	string $server
+	 */
+	private function setServer($server)
+	{
+		$this->server = (string) $server;
 	}
 
 
@@ -404,7 +441,7 @@ class CampaignCommander
 	 *
 	 * @return	string								The message ID.
 	 * @param	string $name						Name of the message.
-	 * @param	string $desc						Description of the message.
+	 * @param	string $description					Description of the message.
 	 * @param	string $subject						Subject of the message.
 	 * @param	string $from						From name.
 	 * @param	string $fromEmail					From email-address.
@@ -417,11 +454,12 @@ class CampaignCommander
 	 * @param	bool[optional] $unsubscribe			Use unsubscribe feature of Windows Live Mail.
 	 * @param	string[optional] $unsublinkpage		Unjoin URL, imporve deliverability displaying a unsubscribe button in Windows Live Mail.
 	 */
-	public function createEmailMessage($name, $desc, $subject, $from, $fromEmail, $to, $body, $encoding, $replyTo, $replyToEmail, $bounceback = false, $unsubscribe = false, $unsublinkpage = null)
+	public function createEmailMessage($name, $description, $subject, $from, $fromEmail, $to, $body, $encoding, $replyTo, $replyToEmail, $bounceback = false, $unsubscribe = false, $unsublinkpage = null)
 	{
-		// build member-object
+		// build parameters
+		$parameters = array();
 		$parameters['name'] = (string) $name;
-		$parameters['desc'] = (string) $desc;
+		$parameters['description'] = (string) $description;
 		$parameters['subject'] = (string) $subject;
 		$parameters['from'] = (string) $from;
 		$parameters['fromEmail'] = (string) $fromEmail;
@@ -447,7 +485,12 @@ class CampaignCommander
 	 */
 	public function createEmailMessageByObj(array $message)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['message'] = $message;
+
+		// make the call
+		return $this->doCall('createEmailMessageByObj', $parameters);
 	}
 
 
@@ -460,9 +503,17 @@ class CampaignCommander
 	 * @param	string $from		From name.
 	 * @param	string $body		Body of the SMS.
 	 */
-	public function createSMSMessage($name, $desc, $from, $body)
+	public function createSmsMessage($name, $desc, $from, $body)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['name'] = (string) $name;
+		$parameters['desc'] = (string) $desc;
+		$parameters['from'] = (string) $from;
+		$parameters['body'] = (string) $body;
+
+		// make the call
+		return $this->doCall('createSMSMessage', $parameters);
 	}
 
 
@@ -474,7 +525,12 @@ class CampaignCommander
 	 */
 	public function createSmsMessageByObj(array $message)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['message'] = $message;
+
+		// make the call
+		return $this->doCall('createSmsMessageByObj', $parameters);
 	}
 
 
@@ -486,21 +542,33 @@ class CampaignCommander
 	 */
 	public function deleteMessage($id)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = $message;
+
+		// make the call
+		return $this->doCall('deleteMessage', $parameters);
 	}
 
 
 	/**
-	 * Update message.
+	 * Update a message field.
 	 *
 	 * @return	bool			true if the update was successful.
 	 * @param	string $id		ID of the message.
 	 * @param	string $field	The field to update.
-	 * @param	string $value	The value to set.
+	 * @param	mixed $value	The value to set.
 	 */
 	public function updateMessage($id, $field, $value)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+		$parameters['field'] = (string) $field;
+		$parameters['value'] = $mixed;
+
+		// make the call
+		return $this->doCall('updateMessage', $parameters);
 	}
 
 
@@ -510,14 +578,19 @@ class CampaignCommander
 	 * @return	bool				true if the update was successful.
 	 * @param	array $message		The message object.
 	 */
-	public function updateEmailMessageByObj(array $message)
+	public function updateMessageByObj(array $message)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['message'] = $message;
+
+		// make the call
+		return $this->doCall('updateMessageByObj', $parameters);
 	}
 
 
 	/**
-	 * Clone message.
+	 * Clone a message.
 	 *
 	 * @return	string				ID of the newly created message.
 	 * @param	string $id			ID of the message.
@@ -525,7 +598,13 @@ class CampaignCommander
 	 */
 	public function cloneMessage($id, $newName)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+		$parameters['newName'] = (string) $newName;
+
+		// make the call
+		return $this->doCall('cloneMessage', $parameters);
 	}
 
 
@@ -537,8 +616,10 @@ class CampaignCommander
 	 */
 	public function getMessage($id)
 	{
+		// build parameters
 		$parameters['id'] = (string) $id;
 
+		// make the call
 		return (array) $this->doCall('getMessage', $parameters);
 	}
 
@@ -547,12 +628,14 @@ class CampaignCommander
 	 * Get last email-messages.
 	 *
 	 * @return	array			IDs of messages.
-	 * @param	string $limit	Maximum number of messages to retrieve.
+	 * @param	int $limit	Maximum number of messages to retrieve.
 	 */
 	public function getLastEmailMessages($limit)
 	{
+		// build parameters
 		$parameters['limit'] = (int) $limit;
 
+		// make the call
 		return (array) $this->doCall('getLastEmailMessages', $parameters);
 	}
 
@@ -561,12 +644,14 @@ class CampaignCommander
 	 * Get last SMS-messages.
 	 *
 	 * @return	array			IDs of messages.
-	 * @param	string $limit	Maximum number of messages to retrieve.
+	 * @param	int $limit	Maximum number of messages to retrieve.
 	 */
 	public function getLastSmsMessages($limit)
 	{
+		// build parameters
 		$parameters['limit'] = (int) $limit;
 
+		// make the call
 		return (array) $this->doCall('getLastSmsMessages', $parameters);
 	}
 
@@ -576,25 +661,40 @@ class CampaignCommander
 	 *
 	 * @return	array			IDs of messages matching the search.
 	 * @param	string $field	Field to search.
-	 * @param	string $value	Value to search.
+	 * @param	mixed $value	Value to search.
+	 * @param	int $limit		Maximum number of messages to retrieve.
 	 */
-	public function getEmailMessagesByField($field, $value)
+	public function getEmailMessagesByField($field, $value, $limit)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['field'] = (string) $field;
+		$parameters['value'] = $value;
+		$parameters['limit'] = (int) $limit;
+
+		// make the call
+		return $this->doCall('getEmailMessagesByField', $parameters);
 	}
 
 
 	/**
 	 * Get SMS-messages by field.
 	 *
-	 * @return	array				IDs of messages matching the search.
-	 * @param	string $field		Field to search.
-	 * @param	string $value		Value to search.
-	 * @param	string $limit		Maximum number of messages to retrieve.
+	 * @return	array			IDs of messages matching the search.
+	 * @param	string $field	Field to search.
+	 * @param	mixed $value	Value to search.
+	 * @param	int $limit		Maximum number of messages to retrieve.
 	 */
 	public function getSmsMessagesByField($field, $value, $limit)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['field'] = (string) $field;
+		$parameters['value'] = $value;
+		$parameters['limit'] = (int) $limit;
+
+		// make the call
+		return $this->doCall('getSmsMessagesByField', $parameters);
 	}
 
 
@@ -607,9 +707,11 @@ class CampaignCommander
 	 */
 	public function getMessagesByPeriod($dateBegin, $dateEnd)
 	{
+		// build parameters
 		$parameters['dateBegin'] = date('Y-m-d H:i:s', (int) $dateBegin);
 		$parameters['dateEnd'] = date('Y-m-d H:i:s', (int) $dateEnd);
 
+		// make the call
 		return (array) $this->doCall('getMessagesByPeriod', $parameters);
 	}
 
@@ -621,9 +723,16 @@ class CampaignCommander
 	 * @param	string $messageId	ID of the message.
 	 * @param	string $part		Part of the message to preview (HTML or text).
 	 */
-	public function getEmailMessagePreview($messageId, $part)
+	public function getEmailMessagePreview($messageId, $part = 'HTML')
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// @todo	validate
+		// build parameters
+		$parameters = array();
+		$parameters['messageId'] = (string) $messageId;
+		$parameters['part'] = $part;
+
+		// make the call
+		return $this->doCall('getEmailMessagePreview', $parameters);
 	}
 
 
@@ -635,433 +744,578 @@ class CampaignCommander
 	 */
 	public function getSmsMessagePreview($messageId)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['messageId'] = (string) $messageId;
+
+		// make the call
+		return $this->doCall(getSmsMessagePreview'', $parameters);
 	}
 
 
 	/**
-	 * Track all links.
+	 * Activate tracking for all links.
 	 *
 	 * @return	array
 	 * @param	string $id		ID of the message.
 	 */
 	public function trackAllLinks($id)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+
+		// make the call
+		return $this->doCall('trackAllLinks', $parameters);
 	}
 
 
 	/**
-	 * Untrack all links.
+	 * Deactivate link tracking for all links.
 	 *
 	 * @return	bool			true if the untrack operation was successful.
 	 * @param	string $id		ID of the message.
 	 */
 	public function untrackAllLinks($id)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+
+		// make the call
+		return $this->doCall('untrackAllLinks', $parameters);
 	}
 
 
 	/**
-	 * Track link by position.
+	 * Tracks a link based on its position in an email.
 	 *
-	 * @return	array				Link order.
+	 * @return	array				The order number of the URL.
 	 * @param	string $id			ID of the message.
 	 * @param	string $position	Position of the link to update in the message.
 	 * @param	string $part		HTML or text.
 	 */
-	public function trackLinkByPosition($id, $position, $part)
+	public function trackLinkByPosition($id, $position, $part = 'HTML')
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// @todo	validate
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+		$parameters['position'] = (string) $position;
+		$parameters['part'] = (string) $part;
+
+		// make the call
+		return $this->doCall('trackLinkByPosition', $parameters);
 	}
 
 
 	/**
-	 * Get all links.
-	 *
-	 * @return	array			List of IDs of the links.
-	 * @param	string $id		ID of the message.
-	 */
-	public function getAllLinks($id)
-	{
-		throw new CampaignCommanderException('Not implemented', 500);
-	}
-
-
-	/**
-	 * Get all tracked links.
+	 * Get a list of all teh tracked links in an email.
 	 *
 	 * @return	array			List of IDs of the tracked links.
 	 * @param	string $id		ID of the message.
 	 */
 	public function getAllTrackedLinks($id)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+
+		// make the call
+		return $this->doCall('getAllTrackedLinks', $parameters);
 	}
 
 
 	/**
-	 * Get all unused tracked links.
+	 * Retrieves the unused tracked links for an email.
 	 *
 	 * @return	array			List of IDs of the unused tracked links.
 	 * @param	string $id		ID of the message.
 	 */
 	public function getAllUnusedTrackedLinks($id)
 	{
-		throw new CampaignCommanderException('Not implemented', 500);
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+
+		// make the call
+		return $this->doCall('getAllUnusedTrackedLinks', $parameters);
 	}
 
 
 	/**
-	 * Get all trackable links.
+	 * Retrieves all the trackable links in an email.
 	 *
 	 * @return	array			List of IDs of the trackable links.
 	 * @param	string $id		ID of the message.
 	 */
 	public function getAllTrackableLinks($id)
 	{
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+
+		// make the call
+		return $this->doCall('getAllTrackableLinks', $parameters);
+	}
+
+
+	/**
+	 * Sends a test email campaign to a group of recipients.
+	 *
+	 * @return							true if successfull, false otherwise.
+	 * @param	string $id				The ID of the message to test.
+	 * @param	string $groupId			The ID of the group to use for the test.
+	 * @param	string $campaignName	The name of the test campaign.
+	 * @param	string $subject			The subject of the message to test.
+	 * @param	string $part			The part of the message to send, allowed values are: HTML, TXT, MULTIPART.
+	 */
+	public function testEmailMessageByGroup($id, $groupId, $campaignName, $subject, $part = 'MULTIPART')
+	{
+		// @todo	validate
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+		$parameters['groupId'] = (string) $groupId;
+		$parameters['campaignName'] = (string) $campaignName;
+		$parameters['subject'] = (string) $subject;
+		$parameters['part'] = (string) $part;
+
+		// make the call
+		return $this->doCall('testEmailMessageByGroup', $parameters);
+	}
+
+
+	/**
+	 * Sends a test email campaign to a member.
+	 *
+	 * @return							true if successfull, false otherwise.
+	 * @param	string $id				The ID of the message to test.
+	 * @param	string $memberId		The ID of the member to use for the test.
+	 * @param	string $campaignName	The name of the test campaign.
+	 * @param	string $subject			The subject of the message to test.
+	 * @param	string $part			The part of the message to send, allowed values are: HTML, TXT, MULTIPART.
+	 */
+	public function testEmailMessageByMember($id, $memberId, $campaignName, $subject, $part = 'MULTIPART')
+	{
+		// @todo	validate
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+		$parameters['memberId'] = (string) $memberId;
+		$parameters['campaignName'] = (string) $campaignName;
+		$parameters['subject'] = (string) $subject;
+		$parameters['part'] = (string) $part;
+
+		// make the call
+		return $this->doCall('testEmailMessageByMember', $parameters);
+	}
+
+
+	/**
+	 * Sends a test email campaign to a member.
+	 *
+	 * @return							true if successfull, false otherwise.
+	 * @param	string $id				The ID of the message to test.
+	 * @param	string $memberId		The ID of the member to use for the test.
+	 * @param	string $campaignName	The name of the test campaign.
+	 */
+	public function testSmsMessage($id, $memberId, $campaignName)
+	{
+		// build parameters
+		$parameters = array();
+		$parameters['id'] = (string) $id;
+		$parameters['memberId'] = (string) $memberId;
+		$parameters['campaignName'] = (string) $campaignName;
+
+		// make the call
+		return $this->doCall('testSmsMessage', $parameters);
+	}
+
+
+	/**
+	 * Retrieves the email address of the default sender.
+	 *
+	 * @return	string		The email address of the default sender.
+	 */
+	public function getDefaultSender()
+	{
+		// make the call
+		return $this->doCall('getDefaultSender');
+	}
+
+
+	/**
+	 * Get a list of validated alternate senders.
+	 *
+	 * @return	array	The list of email addresses.
+	 */
+	public function getValidatedAltSenders()
+	{
+		// make the call
+		return $this->doCall('getValidatedAltSenders');
+	}
+
+
+	/**
+	 * Get a list of not validated alternate senders.
+	 *
+	 * @return	array	The list of email addresses.
+	 */
+	public function getNotValidatedSenders()
+	{
+		// make the call
+		return $this->doCall('getNotValidatedSenders');
+	}
+
+
+// url management methods
+	/**
+	 * Creates a standard URL.
+	 *
+	 * @return	string				ID of the created URL.
+	 * @param	string $messageId	ID of the message.
+	 * @param	string $name		Name of the URL.
+	 * @param	string $url			URL to add.
+	 */
+	public function createStandardUrl($messageId, $name, $url)
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function createAndAddStandardUrl()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+
+	/**
+	 * Creates an Unsubscribe URL.
+	 *
+	 * @return	string					ID of the created URL.
+	 * @param	string $messageId		ID of the message.
+	 * @param	string $name			Name of the URL.
+	 * @param	string $pageOk			URL to call when unsubscribe was successful.
+	 * @param	string $messageOk		Message to display when unsubscribe was successful.
+	 * @param	string $pageError		URL to call when unsubscribe was unsuccessful.
+	 * @param	string $messageError	Message to display when unsubscribe was unsuccessful.
+	 */
+	public function createUnsubscribeUrl($messageId, $name, $pageOk, $messageOk, $pageError, $messageError)
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function createAndAddUnsubscribeUrl()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	/**
+	 * Creates an personalised URL.
+	 *
+	 * @return	string				ID of the created URL.
+	 * @param	string $messageId	ID of the message.
+	 * @param	string $name		Name of the URL.
+	 * @param	string $url			URL to add.
+	 */
+	public function createPersonalisedUrl($messageId, $name, $url)
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function createAndAddPersonalisedUrl()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	/**
+	 * Creates an update URL.
+	 *
+	 * @return	string					ID of the created URL.
+	 * @param	string $messageId		ID of the message.
+	 * @param	string $name			Name of the URL.
+	 * @param	mixed $parameters		Update parameters to apply to the member table (for a particular member).
+	 * @param	string $pageOk			Url to call when unsubscribe was successful.
+	 * @param	string $messageOk		Message to display when unsubscribe was successful.
+	 * @param	string $pageError		Url to call when unsubscribe was unsuccessful.
+	 * @param	string $messageError	Message to display when unsubscribe was unssuccessful.
+	 */
+	public function createUpdateUrl($messageId, $name, $parameters, $pageOk, $messageOk, $pageError, $messageError)
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function createAndAddUpdateUrl()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function createActionUrl()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function createdAndAddActionUrl()
+	{
+
+	}
+
+
+
+	/**
+	 * Creates a mirror URL
+	 *
+	 * @return	string				ID of the created URL.
+	 * @param	string $messageId	ID of the message.
+	 * @param	string $name		Name of the URL.
+	 */
+	public function createMirrorUrl($messageId, $name)
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function createAndAddMirrorUrl()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function addShareLink()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	/**
+	 * Update an URL by field
+	 *
+	 * @return	bool				true if the update was successful.
+	 * @param	string $messageId	ID of the message.
+	 * @param	int $order			Order of the URL.
+	 * @param	string $field		Field to update.
+	 * @param	string $value		Value to set.
+	 */
+	public function updateUrlByField($messageId, $order, $field, $value)
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	/**
+	 * Delete an URL
+	 *
+	 * @return	bool				true if the delete was successful.
+	 * @param	string $messageId	ID of the message.
+	 * @param	int $order			Order of the URL.
+	 */
+	public function deleteUrl($messageId, $order)
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	/**
+	 * Get an URL by his order
+	 *
+	 * @return	array				The URL parameters.
+	 * @param	string $messageId	ID of the message.
+	 * @param	int $order			Order of the URL.
+	 */
+	public function getUrlByOrder($messageId, $order)
+	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
 // segment methods
-	/**
-	 * Create basic segment.
-	 *
-	 * @return	string							The ID of the created segment.
-	 * @param	string $name					Name of the segment.
-	 * @param	string[optional] $desc			Description of the segment.
-	 * @param	string[optional] $criteria		Criteria in Natural Language to select members.
-	 */
-	public function createBasicSegment($name, $desc = null, $criteria = null)
+	public function segmentationCreateSegment()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
-	/**
-	 * Create basic segment.
-	 *
-	 * @return	string			The ID of the created segment.
-	 * @param	array $segment	The segment object.
-	 */
-	public function createBasicSegmentByObj(array $segment)
+	public function segmentationDeleteSegment()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
-	/**
-	 * Get segment
-	 *
-	 * @return	array			The segment object
-	 * @param	string $id		ID of the segment.
-	 */
-	public function getSegment($id)
-	{
-		$parameters['id'] = (string) $id;
-
-		return (array) $this->doCall('getSegment', $parameters);
-	}
-
-
-	/**
-	 * Create combined segment.
-	 *
-	 * @return	string				ID of the created segment.
-	 * @param	string $name		Name of the combined segment.
-	 * @param	string $desc		Description of the new segment.
-	 * @param	string $segment1	ID of the first segment.
-	 * @param	string $segment2	ID of teh second segment.
-	 * @param	string $operartor	Operators to combine the two segments, possible values are: AND, OR.
-	 */
-	public function createCombinedSegment($name, $desc, $segment1, $segment2, $operartor)
+	public function segmentationAddStringDemographicCriteriaByObj()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
-	/**
-	 * Delete a segment.
-	 *
-	 * @return	bool			true if the delete operation was successful.
-	 * @param	string $id		ID of the segment.
-	 */
-	public function deleteSegment($id)
+	public function segmentationAddNumericDemographicCriteriaByObj()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
-	/**
-	 * Update a segment.
-	 *
-	 * @return	bool			true if the update was successful.
-	 * @param	string $id		ID of the segment.
-	 * @param	string $field	The field to update.
-	 * @param	string $value	Th value to set.
-	 */
-	public function updateSegment($id, $field, $value)
+	public function segmentationAddDateDemographicCriteriaByObj()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
-	/**
-	 * Get last segments.
-	 *
-	 * @return	array			List of segment IDs.
-	 * @param	string $limit	Maximum number of segment IDs to return.
-	 */
-	public function getLastSegments($limit)
-	{
-		$parameters['limit'] = (int) $limit;
-
-		return (array) $this->doCall('getLastSegments', $parameters);
-	}
-
-
-	/**
-	 * Get segments by field.
-	 *
-	 * @return	array				List of segment IDs.
-	 * @param	string $field		Name of the field to search.
-	 * @param	string $value		Value of the field to search.
-	 * @param	string $limit		Max number of segment ID's to return.
-	 */
-	public function getSegmentsByField($field, $value, $limit)
+	public function segmentationAddCampaignActionCriteriaByObj()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
-	/**
-	 * Member count.
-	 *
-	 * @return	int				Number of members in the segment.
-	 * @param	string $id		ID of the segment.
-	 */
-	public function membersCount($id)
-	{
-		// build member-object
-		$parameters['id'] = $id;
-
-		// make the call
-		return (int) $this->doCall('membersCount', $parameters);
-	}
-
-
-	/**
-	 * Distinct member count.
-	 *
-	 * @return	int				Distinct member count of the segment.
-	 * @param	string $id		ID of the segment.
-	 */
-	public function distinctMembersCount($id)
-	{
-		// build member-object
-		$parameters['id'] = $id;
-
-		// make the call
-		return (int) $this->doCall('mailingListDistinctCount', $parameters);
-	}
-
-
-	/**
-	 * Update a segment.
-	 *
-	 * @return	bool				true if successfull.
-	 * @param	array $segment		The segment object.
-	 */
-	public function updateSegmentByObj($segment)
+	public function segmentationAddCampaignTrackableLinkCriteriaByObj()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
-// mailing list methods
-	/**
-	 * Create a mailingList.
-	 *
-	 * @return	string							The ID of the created mailingList.
-	 * @param	string $name					The name of the mailingList.
-	 * @param	string $desc					A description for the mailingList.
-	 * @param	string[optional] $segmentID		ID of the segment to associate to the mailingList.
-	 */
-	public function createMailingList($name, $desc, $segmentID = null)
+	public function segmentationAddSerieActionCriteriaByObj()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
-	/**
-	 * Create a mailingList.
-	 *
-	 * @return	string					The ID of the created mailingList.
-	 * @param	array $mailingList		The mailingList object.
-	 */
-	public function createMailingListByObj(array $mailingList)
+	public function segmentationAddSerieTrackableLinkCriteriaByObj()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
-	/**
-	 * Update a mailingList.
-	 *
-	 * @return	bool					true if the update was successful.
-	 * @param	array $mailingList		The mailing list object.
-	 */
-	public function updateMailingListByObj(array $mailingList)
+	public function segmentationAddSocialNetworkCriteriaByObj()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
-	/**
-	 * Get a mailingList
-	 *
-	 * @return	array			The mailingList
-	 * @param	string $id		The ID of the mailingList.
-	 */
-	public function getMailingList($id)
+	public function segmentationAddRecencyCriteriaByObj()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
-	/**
-	 * MailingList count
-	 *
-	 * @return	int					Count fo the specified mailingList.
-	 * @param	string $id			The ID of the mailingList.
-	 */
-	public function mailingListCount($id)
-	{
-		// build member-object
-		$parameters['id'] = $id;
-
-		// make the call
-		return (int) $this->doCall('mailingListCount', $parameters);
-	}
-
-
-	/**
-	 * MailingList distinct count.
-	 *
-	 * @return	int					Distinct count (without duplicates) of the specified mailingList.
-	 * @param	string $id			The ID of the mailingList.
-	 */
-	public function mailingListDistinctCount($id)
+	public function segmentationAddDataMartCriteriaByObj()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
-	/**
-	 * Delete a mailingList
-	 *
-	 * @return	bool				true if delete was successful.
-	 * @param	string $id			The ID of the mailingList.
-	 */
-	public function deleteMailingList($id)
+	public function segmentationGetSegmentById()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
-	/**
-	 * Update a mailingList
-	 *
-	 * @return	bool				true if the update wass successful.
-	 * @param	string $id			The ID of the mailingList.
-	 * @param	string $field		Name of the field to update.
-	 * @param	string $value		Value to set.
-	 */
-	public function updateMailingList($id, $field, $value)
+	public function segmentationGetSegmentList()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
-	/**
-	 * Clone a mailing list.
-	 *
-	 * @return	string				The ID of the newly created mailingList.
-	 * @param	string $id			The ID of the mailingList.
-	 * @param	string $name		Name of the newly created mailingList.
-	 */
-	public function cloneMailingList($id, $name)
+	public function segmentationGetSegmentCriterias()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
-	/**
-	 * Get last mailing lists.
-	 *
-	 * @return	array			The IDs of the mailingLists.
-	 * @param	string $limit	Number of mailingList ID's to retrieve (max 300).
-	 */
-	public function getLastMailingLists($limit)
+	public function segmentationGetPersoFragList()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
-	/**
-	 * Get mailing lists by period.
-	 *
-	 * @return	array				The IDs of the mailingLists.
-	 * @param	int $dateBegin		Begin data of the period to retrieve.
-	 * @param	int $dateEnd		End date of the period to retrieve.
-	 */
-	public function getMailingListsByPeriod($dateBegin, $dateEnd)
+	public function segmentationDeleteCriteria()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
-	/**
-	 * Get mailing list by field.
-	 *
-	 * @return	array				IDs of the retrieved mailinglist.
-	 * @param	string $id			The ID of the mailingList.
-	 * @param	string $field		Name of the field to search.
-	 * @param	string $value		Value to search in the field.
-	 */
-	public function getMailingListsByField($id, $field, $value)
+	public function segmentationUpdateSegment()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
-	/**
-	 * Add a segment.
-	 *
-	 * @return	array				true if the segment was succesfully added.
-	 * @param	string $id			The ID of the mailingList.
-	 * @param	string $segmentId	ID of the segment.
-	 */
-	public function addSegment($id, $segmentId)
+	public function segmentationUpdateStringDemographicCriteriaByObj()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
-	/**
-	 * Remove a segment.
-	 *
-	 * @return	bool				true if the segment was successfully removed.
-	 * @param	string $id			The ID of the mailingList.
-	 * @param	string $segmentId	ID of the segment.
-	 */
-	public function removeSegment($id, $segmentId)
+	public function segmentationUpdateNumericDemographicCriteriaByObj()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
+
+	public function segmentationUpdateDateDemographicCriteriaByObj()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function segmentationUpdateCampaignActionCriteriaByObj()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function segmentationUpdateCampaignTrackableLinkCriteriaByObj()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function segmentationUpdateSerieActionCriteriaByObj()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function segmentationUpdateSerieTrackableLinkCriteriaByObj()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function segmentationUpdateSocialNetworkCriteriaByObj()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function segmentationUpdateRecencyCriteriaByObj()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function segmentationUpdateDataMartCriteriaByObj()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function segmentationCount()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function segmentationDistinctCount()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
 
 // campaign methods
 	/**
@@ -1079,7 +1333,39 @@ class CampaignCommander
 	 */
 	public function createCampaign($name, $sendDate, $messageId, $mailingListId, $description = null, $notifProgress = false, $postClickTracking = false, $emaildedupfig = false)
 	{
-		// build member-object
+		// build parameters
+		$parameters = array();
+		$parameters['name'] = (string) $name;
+		if($description !== null) $parameters['desc'] = (string) $description;
+		$parameters['sendDate'] = date('Y-m-d H:i:s', (int) $sendingDate);
+		$parameters['messageId'] = (string) $messageId;
+		$parameters['mailingListId'] = (string) $mailingListId;
+		$parameters['notifProgress'] = (bool) $notifProgress;
+		$parameters['postClickTracking'] = (bool) $postClickTracking;
+		$parameters['emaildedupflg'] = (bool) $emaildedupfig;
+
+		// make the call
+		return $this->doCall('createCampaign', $parameters);
+	}
+
+
+	/**
+	 * Create a campaign.
+	 *
+	 * @return	string								The ID of the campaign.
+	 * @param	string $name						Name of the campaign.
+	 * @param	int $sendDate						Date for the campaign to be scheduled.
+	 * @param	string $messageId					Id of the message to send.
+	 * @param	string $mailingListId				Id of the mailing list to be send the campaign to.
+	 * @param	string[optional] $description		The description.
+	 * @param	bool[optional] $notifProgress		Should you be notified of the progress of the campaign by email.
+	 * @param	bool[optional] $postClickTracking	Use post click tracking?
+	 * @param	bool[optional] $emaildedupfig		Deduplicate the mailing list?
+	 */
+	public function createCampaignWithAnalytics($name, $sendDate, $messageId, $mailingListId, $description = null, $notifProgress = false, $postClickTracking = false, $emaildedupfig = false)
+	{
+		// build parameters
+		$parameters = array();
 		$parameters['name'] = (string) $name;
 		if($description !== null) $parameters['desc'] = (string) $description;
 		$parameters['sendDate'] = date('Y-m-d H:i:s', (int) $sendingDate);
@@ -1194,6 +1480,18 @@ class CampaignCommander
 	}
 
 
+	public static function getCampaignsByStatus()
+	{
+
+	}
+
+
+	public static function getCampaignsByPeriod()
+	{
+
+	}
+
+
 	/**
 	 * Get the status for a campaign.
 	 *
@@ -1218,119 +1516,276 @@ class CampaignCommander
 	}
 
 
-// URL methods
-	/**
-	 * Creates a standard URL.
-	 *
-	 * @return	string				ID of the created URL.
-	 * @param	string $messageId	ID of the message.
-	 * @param	string $name		Name of the URL.
-	 * @param	string $url			URL to add.
-	 */
-	public function createStandardUrl($messageId, $name, $url)
+	public function testCampaignByGroup()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
-	/**
-	 * Creates an Unsubscribe URL.
-	 *
-	 * @return	string					ID of the created URL.
-	 * @param	string $messageId		ID of the message.
-	 * @param	string $name			Name of the URL.
-	 * @param	string $pageOk			URL to call when unsubscribe was successful.
-	 * @param	string $messageOk		Message to display when unsubscribe was successful.
-	 * @param	string $pageError		URL to call when unsubscribe was unsuccessful.
-	 * @param	string $messageError	Message to display when unsubscribe was unsuccessful.
-	 */
-	public function createUnsubscribeUrl($messageId, $name, $pageOk, $messageOk, $pageError, $messageError)
+	public function testCampaignByMember()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
-	/**
-	 * Creates an personalised URL.
-	 *
-	 * @return	string				ID of the created URL.
-	 * @param	string $messageId	ID of the message.
-	 * @param	string $name		Name of the URL.
-	 * @param	string $url			URL to add.
-	 */
-	public function createPersonalisedUrl($messageId, $name, $url)
+	public function pauseCampaign()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
-	/**
-	 * Creates an update URL.
-	 *
-	 * @return	string					ID of the created URL.
-	 * @param	string $messageId		ID of the message.
-	 * @param	string $name			Name of the URL.
-	 * @param	mixed $parameters		Update parameters to apply to the member table (for a particular member).
-	 * @param	string $pageOk			Url to call when unsubscribe was successful.
-	 * @param	string $messageOk		Message to display when unsubscribe was successful.
-	 * @param	string $pageError		Url to call when unsubscribe was unsuccessful.
-	 * @param	string $messageError	Message to display when unsubscribe was unssuccessful.
-	 */
-	public function createUpdateUrl($messageId, $name, $parameters, $pageOk, $messageOk, $pageError, $messageError)
+	public function unpauseCampaign()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
-	/**
-	 * Creates a mirror URL
-	 *
-	 * @return	string				ID of the created URL.
-	 * @param	string $messageId	ID of the message.
-	 * @param	string $name		Name of the URL.
-	 */
-	public function createMirrorUrl($messageId, $name)
+	public function getCampaignSnapshotReport()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
-	/**
-	 * Update an URL by field
-	 *
-	 * @return	bool				true if the update was successful.
-	 * @param	string $messageId	ID of the message.
-	 * @param	int $order			Order of the URL.
-	 * @param	string $field		Field to update.
-	 * @param	string $value		Value to set.
-	 */
-	public function updateUrlByField($messageId, $order, $field, $value)
+// banner methods
+	public function createBanner()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
-	/**
-	 * Delete an URL
-	 *
-	 * @return	bool				true if the delete was successful.
-	 * @param	string $messageId	ID of the message.
-	 * @param	int $order			Order of the URL.
-	 */
-	public function deleteUrl($messageId, $order)
+	public function createBannerByObj()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
 
 
-	/**
-	 * Get an URL by his order
-	 *
-	 * @return	array				The URL parameters.
-	 * @param	string $messageId	ID of the message.
-	 * @param	int $order			Order of the URL.
-	 */
-	public function getUrlByOrder($messageId, $order)
+	public function deleteBanner()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function updateBanner()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function updateBannerByObj()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function cloneBanner()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function getBannerPreview()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function getBanner()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function getBannersByField()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function getBannersByPeriod()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function getLastBanners()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function trackAllBannerLinks()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function untrackAllBannerLinks()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function trackBannerLinkByPosition()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function  untrackBannerLinkByOrder()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function getAllBannerTrackedLinks()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function getAllUnusedBannerTrackedLinks()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function getAllBannerTrackableLinks()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+
+
+// banner link management methods
+	public function createStandardBannerLink()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function createAndAddStandardBannerLink()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function createUnsubscribeBannerLink()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function createAndAddUnsubscribeBannerLink()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function createPersonalisedBannerLink()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function createAndAddPersonalisedBannerLink()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function createUpdateBannerLink()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function createAndAddUpdateBannerLink()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function createActionBannerLink()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function createAndAddActionBannerLink()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function createMirrorBannerLink()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function createAndAddMirrorBannerLink()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function updateBannerLinkByField()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function getBannerLinkByOrder()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+// test group
+	public function createTestGroup()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function createTestGroupByObj()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function addTestMember()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function removeTestMember()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function deleteTestGroup()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function updateTestGroupByObj()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function getTestGroup()
+	{
+		throw new CampaignCommanderException('Not implemented', 500);
+	}
+
+
+	public function getClientTestGroups()
 	{
 		throw new CampaignCommanderException('Not implemented', 500);
 	}
