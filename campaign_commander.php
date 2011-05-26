@@ -1630,7 +1630,7 @@ class CampaignCommander
 		// build parameters
 		$parameters = array();
 		$parameters['pageNumber'] = (int) $page;
-		$parameters['nbItemPerpage'] = (int) $itemsPerPage;
+		$parameters['nbItemPerPage'] = (int) $itemsPerPage;
 
 		// make the call
 		return $this->doCall('segmentationGetPersoFragList', $parameters);
