@@ -116,9 +116,10 @@ class CampaignCommander
 	 * Default constructor
 	 *
 	 * @return	void
-	 * @param	string $login		Login provided for API access.
-	 * @param	string $password	The password.
-	 * @param	string $key			Manager Key copied from the CCMD web application.
+	 * @param	string $login				Login provided for API access.
+	 * @param	string $password			The password.
+	 * @param	string $key					Manager Key copied from the CCMD web application.
+	 * @param	string[optional] $server	The server to use. Ask your account-manager.
 	 */
 	public function __construct($login, $password, $key, $server = null)
 	{
@@ -380,7 +381,7 @@ class CampaignCommander
 	 * Set the server that has to be used.
 	 *
 	 * @return	void
-	 * @param	string $server
+	 * @param	string $server	The server to use.
 	 */
 	private function setServer($server)
 	{
@@ -724,16 +725,16 @@ class CampaignCommander
 	/**
 	 * Get email-message preview.
 	 *
-	 * @return	array				Preview of the message.
-	 * @param	string $messageId	ID of the message.
-	 * @param	string $part		Part of the message to preview (HTML or text).
+	 * @return	array						Preview of the message.
+	 * @param	string $messageId			ID of the message.
+	 * @param	string[optional] $part		Part of the message to preview (HTML or text).
 	 */
 	public function getEmailMessagePreview($messageId, $part = 'HTML')
 	{
 		// @todo	validate
 		// build parameters
 		$parameters = array();
-		$parameters['messageId'] = (string) $messageId;
+		$parameters['id'] = (string) $messageId;
 		$parameters['part'] = $part;
 
 		// make the call
@@ -795,10 +796,10 @@ class CampaignCommander
 	/**
 	 * Tracks a link based on its position in an email.
 	 *
-	 * @return	array				The order number of the URL.
-	 * @param	string $id			ID of the message.
-	 * @param	string $position	Position of the link to update in the message.
-	 * @param	string $part		HTML or text.
+	 * @return	array					The order number of the URL.
+	 * @param	string $id				ID of the message.
+	 * @param	string $position		Position of the link to update in the message.
+	 * @param	string[optional] $part	HTML or text.
 	 */
 	public function trackLinkByPosition($id, $position, $part = 'HTML')
 	{
@@ -868,12 +869,12 @@ class CampaignCommander
 	/**
 	 * Sends a test email campaign to a group of recipients.
 	 *
-	 * @return							true if successfull, false otherwise.
-	 * @param	string $id				The ID of the message to test.
-	 * @param	string $groupId			The ID of the group to use for the test.
-	 * @param	string $campaignName	The name of the test campaign.
-	 * @param	string $subject			The subject of the message to test.
-	 * @param	string $part			The part of the message to send, allowed values are: HTML, TXT, MULTIPART.
+	 * @return								true if successfull, false otherwise.
+	 * @param	string $id					The ID of the message to test.
+	 * @param	string $groupId				The ID of the group to use for the test.
+	 * @param	string $campaignName		The name of the test campaign.
+	 * @param	string $subject				The subject of the message to test.
+	 * @param	string[optional] $part		The part of the message to send, allowed values are: HTML, TXT, MULTIPART.
 	 */
 	public function testEmailMessageByGroup($id, $groupId, $campaignName, $subject, $part = 'MULTIPART')
 	{
@@ -899,7 +900,7 @@ class CampaignCommander
 	 * @param	string $memberId		The ID of the member to use for the test.
 	 * @param	string $campaignName	The name of the test campaign.
 	 * @param	string $subject			The subject of the message to test.
-	 * @param	string $part			The part of the message to send, allowed values are: HTML, TXT, MULTIPART.
+	 * @param	string[optional] $part	The part of the message to send, allowed values are: HTML, TXT, MULTIPART.
 	 */
 	public function testEmailMessageByMember($id, $memberId, $campaignName, $subject, $part = 'MULTIPART')
 	{
@@ -2096,7 +2097,7 @@ class CampaignCommander
 	 * @return	array			The list of campaign IDs matching the status.
 	 * @param	string $status	Status to match, possible values: EDITABLE, QUEUED, RUNNING, PAUSES, COMPLETED, FAILED, KILLED.
 	 */
-	public static function getCampaignsByStatus($status)
+	public function getCampaignsByStatus($status)
 	{
 		// @todo	validate
 		// build parameters
@@ -2115,7 +2116,7 @@ class CampaignCommander
 	 * @param	int $dateBegin	The start date of the period.
 	 * @param	int $dateEnd	The end date of the period.
 	 */
-	public static function getCampaignsByPeriod($dateBegin, $dateEnd)
+	public function getCampaignsByPeriod($dateBegin, $dateEnd)
 	{
 		// build parameters
 		$parameters = array();
@@ -2314,7 +2315,7 @@ class CampaignCommander
 	 *
 	 * @return	bool					true on success, false otherwise.
 	 * @param	string $id				The ID of the banner.
-	 * @param	string $field			The field
+	 * @param	string $field			The field.
 	 * @param	mixed[optional] $value	The new value.
 	 */
 	public function updateBanner($id, $field, $value = null)
@@ -2404,7 +2405,7 @@ class CampaignCommander
 	 * Retrieves a list of banners that contain the given value in a field.
 	 *
 	 * @return	array					The IDs of the banners.
-	 * @param	string $field			The field of the banner
+	 * @param	string $field			The field of the banner.
 	 * @param	mixed[optional] $value	The value.
 	 * @param	int $limit				The size of the list (between 1 and 1000).
 	 */
