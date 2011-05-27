@@ -38,7 +38,7 @@
 class CampaignCommander
 {
 	// internal constant to enable/disable debugging
-	const DEBUG = false;
+	const DEBUG = true;
 
 	// URL for the api
 	const WSDL_URL = 'apiccmd/services/CcmdService?wsdl';
@@ -479,7 +479,7 @@ class CampaignCommander
 		if($unsublinkpage !== null) $parameters['hotmailUnsubUrl'] = (string) $unsublinkpage;
 
 		// make the call
-		return $this->doCall('createEmailMessage', $parameters);
+		return (string) $this->doCall('createEmailMessage', $parameters);
 	}
 
 
@@ -489,7 +489,7 @@ class CampaignCommander
 	 * @return	string				The message ID.
 	 * @param	array $message		The message object.
 	 */
-	public function createEmailMessageByObj(array $message)
+	public function createEmailMessageByObj($message)
 	{
 		// build parameters
 		$parameters = array();
@@ -553,7 +553,7 @@ class CampaignCommander
 		$parameters['id'] = $id;
 
 		// make the call
-		return $this->doCall('deleteMessage', $parameters);
+		return (bool) $this->doCall('deleteMessage', $parameters);
 	}
 
 
@@ -574,7 +574,7 @@ class CampaignCommander
 		$parameters['value'] = $value;
 
 		// make the call
-		return $this->doCall('updateMessage', $parameters);
+		return (bool) $this->doCall('updateMessage', $parameters);
 	}
 
 
@@ -610,7 +610,7 @@ class CampaignCommander
 		$parameters['newName'] = (string) $newName;
 
 		// make the call
-		return $this->doCall('cloneMessage', $parameters);
+		return (string) $this->doCall('cloneMessage', $parameters);
 	}
 
 
@@ -755,7 +755,7 @@ class CampaignCommander
 	{
 		// build parameters
 		$parameters = array();
-		$parameters['messageId'] = (string) $messageId;
+		$parameters['id'] = (string) $messageId;
 
 		// make the call
 		return (string) $this->doCall('getSmsMessagePreview', $parameters);
