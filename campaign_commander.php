@@ -617,7 +617,7 @@ class CampaignCommander
 	/**
 	 * Get message.
 	 *
-	 * @return	array			The message object.
+	 * @return	object			The message object.
 	 * @param	string $id		ID of the message.
 	 */
 	public function getMessage($id)
@@ -626,7 +626,7 @@ class CampaignCommander
 		$parameters['id'] = (string) $id;
 
 		// make the call
-		return (array) $this->doCall('getMessage', $parameters);
+		return $this->doCall('getMessage', $parameters);
 	}
 
 
@@ -679,7 +679,7 @@ class CampaignCommander
 		$parameters['limit'] = (int) $limit;
 
 		// make the call
-		return $this->doCall('getEmailMessagesByField', $parameters);
+		return (array) $this->doCall('getEmailMessagesByField', $parameters);
 	}
 
 
@@ -700,7 +700,7 @@ class CampaignCommander
 		$parameters['limit'] = (int) $limit;
 
 		// make the call
-		return $this->doCall('getSmsMessagesByField', $parameters);
+		return (array) $this->doCall('getSmsMessagesByField', $parameters);
 	}
 
 
@@ -725,20 +725,23 @@ class CampaignCommander
 	/**
 	 * Get email-message preview.
 	 *
-	 * @return	array						Preview of the message.
+	 * @return	string						Preview of the message.
 	 * @param	string $messageId			ID of the message.
 	 * @param	string[optional] $part		Part of the message to preview (HTML or text).
 	 */
 	public function getEmailMessagePreview($messageId, $part = 'HTML')
 	{
-		// @todo	validate
+		// validate
+		$allowedParts = array('HTML', 'text');
+		if(!in_array($part, $allowedParts)) throw new CampaignCommanderException('Invalid part ('. $parrt .'), allowed values are: '. implode(', ', $allowedParts) .'.');
+
 		// build parameters
 		$parameters = array();
 		$parameters['id'] = (string) $messageId;
 		$parameters['part'] = $part;
 
 		// make the call
-		return $this->doCall('getEmailMessagePreview', $parameters);
+		return (string) $this->doCall('getEmailMessagePreview', $parameters);
 	}
 
 
@@ -755,7 +758,7 @@ class CampaignCommander
 		$parameters['messageId'] = (string) $messageId;
 
 		// make the call
-		return $this->doCall('getSmsMessagePreview', $parameters);
+		return (string) $this->doCall('getSmsMessagePreview', $parameters);
 	}
 
 
@@ -828,7 +831,7 @@ class CampaignCommander
 		$parameters['id'] = (string) $id;
 
 		// make the call
-		return $this->doCall('getAllTrackedLinks', $parameters);
+		return (array) $this->doCall('getAllTrackedLinks', $parameters);
 	}
 
 
@@ -845,7 +848,7 @@ class CampaignCommander
 		$parameters['id'] = (string) $id;
 
 		// make the call
-		return $this->doCall('getAllUnusedTrackedLinks', $parameters);
+		return (array) $this->doCall('getAllUnusedTrackedLinks', $parameters);
 	}
 
 
@@ -862,7 +865,7 @@ class CampaignCommander
 		$parameters['id'] = (string) $id;
 
 		// make the call
-		return $this->doCall('getAllTrackableLinks', $parameters);
+		return (array) $this->doCall('getAllTrackableLinks', $parameters);
 	}
 
 
@@ -947,7 +950,7 @@ class CampaignCommander
 	public function getDefaultSender()
 	{
 		// make the call
-		return $this->doCall('getDefaultSender');
+		return (string) $this->doCall('getDefaultSender');
 	}
 
 
@@ -959,7 +962,7 @@ class CampaignCommander
 	public function getValidatedAltSenders()
 	{
 		// make the call
-		return $this->doCall('getValidatedAltSenders');
+		return (array) $this->doCall('getValidatedAltSenders');
 	}
 
 
@@ -971,7 +974,7 @@ class CampaignCommander
 	public function getNotValidatedSenders()
 	{
 		// make the call
-		return $this->doCall('getNotValidatedSenders');
+		return (array) $this->doCall('getNotValidatedSenders');
 	}
 
 
@@ -1568,7 +1571,7 @@ class CampaignCommander
 	/**
 	 * Retrieves a segment.
 	 *
-	 * @return	array
+	 * @return	object
 	 * @param	string $id	The ID of the segment.
 	 */
 	public function segmentationGetSegmentById($id)
@@ -1597,7 +1600,7 @@ class CampaignCommander
 		$parameters['nbItemsPerPage'] = (int) $itemsPerPage;
 
 		// make the call
-		return $this->doCall('segmentationGetSegmentList', $parameters);
+		return (array) $this->doCall('segmentationGetSegmentList', $parameters);
 	}
 
 
@@ -1614,7 +1617,7 @@ class CampaignCommander
 		$parameters['difflistId'] = (string) $id;
 
 		// make the call
-		return $this->doCall('segmentationGetSegmentCriterias', $parameters);
+		return (array) $this->doCall('segmentationGetSegmentCriterias', $parameters);
 	}
 
 
@@ -1633,7 +1636,7 @@ class CampaignCommander
 		$parameters['nbItemPerPage'] = (int) $itemsPerPage;
 
 		// make the call
-		return $this->doCall('segmentationGetPersoFragList', $parameters);
+		return (array) $this->doCall('segmentationGetPersoFragList', $parameters);
 	}
 
 
@@ -1863,7 +1866,7 @@ class CampaignCommander
 		$parameters['id'] = (string) $id;
 
 		// make the call
-		return $this->doCall('segmentationCount', $parameters);
+		return (int) $this->doCall('segmentationCount', $parameters);
 	}
 
 
@@ -1880,7 +1883,7 @@ class CampaignCommander
 		$parameters['id'] = (string) $id;
 
 		// make the call
-		return $this->doCall('segmentationDistinctCount', $parameters);
+		return (int) $this->doCall('segmentationDistinctCount', $parameters);
 	}
 
 
@@ -2056,7 +2059,7 @@ class CampaignCommander
 	/**
 	 * Get a campign.
 	 *
-	 * @return	array			The campaign parameters.
+	 * @return	object			The campaign parameters.
 	 * @param	string $id		The ID of the campaign.
 	 */
 	public function getCampaign($id)
@@ -2087,7 +2090,7 @@ class CampaignCommander
 		$parameters['limit'] = (int) $limit;
 
 		// make the call
-		return $this->doCall('getCampaignsByField', $parameters);
+		return (array) $this->doCall('getCampaignsByField', $parameters);
 	}
 
 
@@ -2105,7 +2108,7 @@ class CampaignCommander
 		$parameters['status'] = (string) $status;
 
 		// make the call
-		return $this->doCall('getCampaignsByStatus', $parameters);
+		return (array) $this->doCall('getCampaignsByStatus', $parameters);
 	}
 
 
@@ -2124,7 +2127,7 @@ class CampaignCommander
 		$parameters['dateEnd'] = date('Y-m-d H:i:s', (int) $dateEnd);
 
 		// make the call
-		return $this->doCall('getCampaignsByPeriod', $parameters);
+		return (array) $this->doCall('getCampaignsByPeriod', $parameters);
 	}
 
 
@@ -2141,7 +2144,7 @@ class CampaignCommander
 		$parameters['id'] = (string) $id;
 
 		// make the call
-		return $this->doCall('getCampaignStatus', $parameters);
+		return (string) $this->doCall('getCampaignStatus', $parameters);
 	}
 
 
@@ -2380,14 +2383,14 @@ class CampaignCommander
 		$parameters['id'] = (string) $id;
 
 		// make the call
-		return $this->doCall('getBannerPreview', $parameters);
+		return (string) $this->doCall('getBannerPreview', $parameters);
 	}
 
 
 	/**
 	 * Retrieves a banner.
 	 *
-	 * @return	array		The banner
+	 * @return	object		The banner
  	 * @param	string $id	The ID of the banner.
 	 */
 	public function getBanner($id)
@@ -2419,7 +2422,7 @@ class CampaignCommander
 		$parameters['limit'] = (int) $limit;
 
 		// make the call
-		return $this->doCall('getBannersByField', $parameters);
+		return (array) $this->doCall('getBannersByField', $parameters);
 	}
 
 
@@ -2438,7 +2441,7 @@ class CampaignCommander
 		$parameters['dateEnd'] = date('Y-m-d H:i:s', (int) $dateEnd);
 
 		// make the call
-		return $this->doCall('getBannersByPeriod', $parameters);
+		return (array) $this->doCall('getBannersByPeriod', $parameters);
 	}
 
 
@@ -2456,7 +2459,7 @@ class CampaignCommander
 		$parameters['limit'] = (int) $limit;
 
 		// make the call
-		return $this->doCall('getLastBanners', $parameters);
+		return (array) $this->doCall('getLastBanners', $parameters);
 	}
 
 
@@ -2545,7 +2548,7 @@ class CampaignCommander
 		$parameters['id'] = (string) $id;
 
 		// make the call
-		return $this->doCall('getAllBannerTrackedLinks', $parameters);
+		return (array) $this->doCall('getAllBannerTrackedLinks', $parameters);
 	}
 
 
@@ -2562,7 +2565,7 @@ class CampaignCommander
 		$parameters['id'] = (string) $id;
 
 		// make the call
-		return $this->doCall('getAllUnusedBannerTrackedLinks', $parameters);
+		return (array) $this->doCall('getAllUnusedBannerTrackedLinks', $parameters);
 	}
 
 
@@ -2579,7 +2582,7 @@ class CampaignCommander
 		$parameters['id'] = (string) $id;
 
 		// make the call
-		return $this->doCall('getAllBannerTrackableLinks', $parameters);
+		return (array) $this->doCall('getAllBannerTrackableLinks', $parameters);
 	}
 
 
@@ -3027,14 +3030,14 @@ class CampaignCommander
 	/**
 	 * Retrieves the list of members in a test group.
 	 *
-	 * @return	array				The list of member ID's in that group
+	 * @return	object				The list of member ID's in that group
 	 * @param	string $groupId		The ID fo the group.
 	 */
 	public function getTestGroup($groupId)
 	{
 		// build parameters
 		$parameters = array();
-		$parameters['groupId'] = (string) $groupId;
+		$parameters['id'] = (string) $groupId;
 
 		// make the call
 		return $this->doCall('getTestGroup', $parameters);
@@ -3049,7 +3052,7 @@ class CampaignCommander
 	public function getClientTestGroups()
 	{
 		// make the call
-		return $this->doCall('getClientTestGroups');
+		return (array) $this->doCall('getClientTestGroups');
 	}
 }
 
