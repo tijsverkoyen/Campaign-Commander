@@ -519,7 +519,7 @@ class CampaignCommander
 		$parameters['body'] = (string) $body;
 
 		// make the call
-		return $this->doCall('createSMSMessage', $parameters);
+		return (string) $this->doCall('createSMSMessage', $parameters);
 	}
 
 

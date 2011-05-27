@@ -10,7 +10,6 @@ require_once 'PHPUnit/Framework/TestCase.php';
  */
 class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 {
-
 	/**
 	 * The instance
 	 * @var CampaignCommander
@@ -60,17 +59,19 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 	}
 
 
-//	/**
-//	 * Tests CampaignCommander->createEmailMessage()
-//	 */
-//	public function testCreateEmailMessage()
-//	{
-//		// TODO Auto-generated CampaignCommanderTest->testCreateEmailMessage()
-//		$this->markTestIncomplete("createEmailMessage test not implemented");
-//
-//		$this->campaignCommander->createEmailMessage(/* parameters */);
-//
-//	}
+	/**
+	 * Tests CampaignCommander->createEmailMessage()
+	 */
+	public function testCreateEmailMessage()
+	{
+		// create the message
+		$var = $this->campaignCommander->createEmailMessage('TEST (remove me)', '', 'subject', 'from', 'email@mhg.ccmdemail.net', 'to', '[EMV TEXTPART]body', 'utf-8', 'replyTo', 'replyTo@mail.be');
+
+		$this->assertType('string', $var);
+
+		// delete message
+		$this->campaignCommander->deleteMessage($var);
+	}
 
 
 //	/**
@@ -80,23 +81,22 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateEmailMessageByObj()
 //		$this->markTestIncomplete("createEmailMessageByObj test not implemented");
-//
 //		$this->campaignCommander->createEmailMessageByObj(/* parameters */);
-//
 //	}
 
 
-//	/**
-//	 * Tests CampaignCommander->createSmsMessage()
-//	 */
-//	public function testCreateSmsMessage()
-//	{
-//		// TODO Auto-generated CampaignCommanderTest->testCreateSmsMessage()
-//		$this->markTestIncomplete("createSmsMessage test not implemented");
-//
-//		$this->campaignCommander->createSmsMessage(/* parameters */);
-//
-//	}
+	/**
+	 * Tests CampaignCommander->createSmsMessage()
+	 */
+	public function testCreateSmsMessage()
+	{
+		// create the message
+		$var = $this->campaignCommander->createSmsMessage('REMOVE ME', '', 'from', '[EMV SMSPART]body');
+		$this->assertType('string', $var);
+
+		// delete message
+		$this->campaignCommander->deleteMessage($var);
+	}
 
 
 //	/**
@@ -106,62 +106,82 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateSmsMessageByObj()
 //		$this->markTestIncomplete("createSmsMessageByObj test not implemented");
-//
 //		$this->campaignCommander->createSmsMessageByObj(/* parameters */);
-//
 //	}
 
 
-//	/**
-//	 * Tests CampaignCommander->deleteMessage()
-//	 */
-//	public function testDeleteMessage()
-//	{
-//		// TODO Auto-generated CampaignCommanderTest->testDeleteMessage()
-//		$this->markTestIncomplete("deleteMessage test not implemented");
-//
-//		$this->campaignCommander->deleteMessage(/* parameters */);
-//
-//	}
+	/**
+	 * Tests CampaignCommander->deleteMessage()
+	 */
+	public function testDeleteMessage()
+	{
+		// create the message
+		$var = $this->campaignCommander->createEmailMessage('TEST (remove me)', '', 'subject', 'from', 'email@mhg.ccmdemail.net', 'to', '[EMV TEXTPART]body', 'utf-8', 'replyTo', 'replyTo@mail.be');
+
+		// delete message
+		$this->assertTrue($this->campaignCommander->deleteMessage($var));
+	}
 
 
-//	/**
-//	 * Tests CampaignCommander->updateMessage()
-//	 */
-//	public function testUpdateMessage()
-//	{
-//		// TODO Auto-generated CampaignCommanderTest->testUpdateMessage()
-//		$this->markTestIncomplete("updateMessage test not implemented");
-//
-//		$this->campaignCommander->updateMessage(/* parameters */);
-//
-//	}
+	/**
+	 * Tests CampaignCommander->updateMessage()
+	 */
+	public function testUpdateMessage()
+	{
+		// create the message
+		$var = $this->campaignCommander->createEmailMessage('TEST (remove me)', '', 'subject', 'from', 'email@mhg.ccmdemail.net', 'to', '[EMV TEXTPART]body', 'utf-8', 'replyTo', 'replyTo@mail.be');
+
+		$this->assertTrue($this->campaignCommander->updateMessage($var, 'name', 'REMOVE ME'));
+
+		// delete message
+		$this->campaignCommander->deleteMessage($var);
+	}
 
 
-//	/**
-//	 * Tests CampaignCommander->updateMessageByObj()
-//	 */
-//	public function testUpdateMessageByObj()
-//	{
-//		// TODO Auto-generated CampaignCommanderTest->testUpdateMessageByObj()
-//		$this->markTestIncomplete("updateMessageByObj test not implemented");
-//
-//		$this->campaignCommander->updateMessageByObj(/* parameters */);
-//
-//	}
+	/**
+	 * Tests CampaignCommander->updateMessageByObj()
+	 */
+	public function testUpdateMessageByObj()
+	{
+		// create the message
+		$var = $this->campaignCommander->createEmailMessage('TEST (remove me)', '', 'subject', 'from', 'email@mhg.ccmdemail.net', 'to', '[EMV TEXTPART]body', 'utf-8', 'replyTo', 'replyTo@mail.be');
+
+		$this->assertTrue($this->campaignCommander->updateMessageByObj(array(
+			'body' => '[EMV TEXTPART]body',
+			'isBounceback' => 0,
+			'description' => '',
+			'encoding' => 'utf-8',
+			'from' => 'from',
+			'fromEmail' => 'email@mhg.ccmdemail.net',
+			'id' => $var,
+			'name' => 'REMOVE ME',
+			'replyTo' => 'replyTo',
+			'replyToEmail' => 'replyTo@mail.be',
+			'subject' => 'subject',
+			'to' => 'to',
+			'hotmailUnsubFlg' => 0
+		)));
+
+		// delete message
+		$this->campaignCommander->deleteMessage($var);
+	}
 
 
-//	/**
-//	 * Tests CampaignCommander->cloneMessage()
-//	 */
-//	public function testCloneMessage()
-//	{
-//		// TODO Auto-generated CampaignCommanderTest->testCloneMessage()
-//		$this->markTestIncomplete("cloneMessage test not implemented");
-//
-//		$this->campaignCommander->cloneMessage(/* parameters */);
-//
-//	}
+	/**
+	 * Tests CampaignCommander->cloneMessage()
+	 */
+	public function testCloneMessage()
+	{
+		// create the message
+		$var = $this->campaignCommander->createEmailMessage('TEST (remove me)', '', 'subject', 'from', 'email@mhg.ccmdemail.net', 'to', '[EMV TEXTPART]body', 'utf-8', 'replyTo', 'replyTo@mail.be');
+		$var2 = $this->campaignCommander->cloneMessage($var, 'CLONE');
+
+		$this->assertType('string', $var2);
+
+		// delete message
+		$this->campaignCommander->deleteMessage($var);
+		$this->campaignCommander->deleteMessage($var2);
+	}
 
 
 	/**
@@ -205,10 +225,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testGetSmsMessagesByField()
 	{
-		// TODO Auto-generated CampaignCommanderTest->testGetSmsMessagesByField()
-		$this->markTestIncomplete("getSmsMessagesByField test not implemented");
-
-		$this->campaignCommander->getSmsMessagesByField(/* parameters */);
+		$this->assertType('array', $this->campaignCommander->getSmsMessagesByField('name', 'remove', 10));
 	}
 
 
@@ -254,9 +271,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testTrackAllLinks()
 //		$this->markTestIncomplete("trackAllLinks test not implemented");
-//
 //		$this->campaignCommander->trackAllLinks(/* parameters */);
-//
 //	}
 
 
@@ -267,9 +282,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testUntrackAllLinks()
 //		$this->markTestIncomplete("untrackAllLinks test not implemented");
-//
 //		$this->campaignCommander->untrackAllLinks(/* parameters */);
-//
 //	}
 
 
@@ -280,9 +293,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testTrackLinkByPosition()
 //		$this->markTestIncomplete("trackLinkByPosition test not implemented");
-//
 //		$this->campaignCommander->trackLinkByPosition(/* parameters */);
-//
 //	}
 
 
@@ -320,9 +331,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testTestEmailMessageByGroup()
 //		$this->markTestIncomplete("testEmailMessageByGroup test not implemented");
-//
 //		$this->campaignCommander->testEmailMessageByGroup(/* parameters */);
-//
 //	}
 
 
@@ -333,9 +342,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testTestEmailMessageByMember()
 //		$this->markTestIncomplete("testEmailMessageByMember test not implemented");
-//
 //		$this->campaignCommander->testEmailMessageByMember(/* parameters */);
-//
 //	}
 
 
@@ -346,9 +353,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testTestSmsMessage()
 //		$this->markTestIncomplete("testSmsMessage test not implemented");
-//
 //		$this->campaignCommander->testSmsMessage(/* parameters */);
-//
 //	}
 
 
@@ -386,9 +391,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateStandardUrl()
 //		$this->markTestIncomplete("createStandardUrl test not implemented");
-//
 //		$this->campaignCommander->createStandardUrl(/* parameters */);
-//
 //	}
 
 
@@ -399,9 +402,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateAndAddStandardUrl()
 //		$this->markTestIncomplete("createAndAddStandardUrl test not implemented");
-//
 //		$this->campaignCommander->createAndAddStandardUrl(/* parameters */);
-//
 //	}
 
 
@@ -412,9 +413,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateUnsubscribeUrl()
 //		$this->markTestIncomplete("createUnsubscribeUrl test not implemented");
-//
 //		$this->campaignCommander->createUnsubscribeUrl(/* parameters */);
-//
 //	}
 
 
@@ -425,9 +424,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateAndAddUnsubscribeUrl()
 //		$this->markTestIncomplete("createAndAddUnsubscribeUrl test not implemented");
-//
 //		$this->campaignCommander->createAndAddUnsubscribeUrl(/* parameters */);
-//
 //	}
 
 
@@ -438,9 +435,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreatePersonalisedUrl()
 //		$this->markTestIncomplete("createPersonalisedUrl test not implemented");
-//
 //		$this->campaignCommander->createPersonalisedUrl(/* parameters */);
-//
 //	}
 
 
@@ -451,9 +446,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateAndAddPersonalisedUrl()
 //		$this->markTestIncomplete("createAndAddPersonalisedUrl test not implemented");
-//
 //		$this->campaignCommander->createAndAddPersonalisedUrl(/* parameters */);
-//
 //	}
 
 
@@ -464,9 +457,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateUpdateUrl()
 //		$this->markTestIncomplete("createUpdateUrl test not implemented");
-//
 //		$this->campaignCommander->createUpdateUrl(/* parameters */);
-//
 //	}
 
 
@@ -477,9 +468,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateAndAddUpdateUrl()
 //		$this->markTestIncomplete("createAndAddUpdateUrl test not implemented");
-//
 //		$this->campaignCommander->createAndAddUpdateUrl(/* parameters */);
-//
 //	}
 
 
@@ -490,9 +479,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateActionUrl()
 //		$this->markTestIncomplete("createActionUrl test not implemented");
-//
 //		$this->campaignCommander->createActionUrl(/* parameters */);
-//
 //	}
 
 
@@ -503,9 +490,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreatedAndAddActionUrl()
 //		$this->markTestIncomplete("createdAndAddActionUrl test not implemented");
-//
 //		$this->campaignCommander->createdAndAddActionUrl(/* parameters */);
-//
 //	}
 
 
@@ -516,9 +501,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateMirrorUrl()
 //		$this->markTestIncomplete("createMirrorUrl test not implemented");
-//
 //		$this->campaignCommander->createMirrorUrl(/* parameters */);
-//
 //	}
 
 
@@ -529,9 +512,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateAndAddMirrorUrl()
 //		$this->markTestIncomplete("createAndAddMirrorUrl test not implemented");
-//
 //		$this->campaignCommander->createAndAddMirrorUrl(/* parameters */);
-//
 //	}
 
 
@@ -542,9 +523,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testAddShareLink()
 //		$this->markTestIncomplete("addShareLink test not implemented");
-//
 //		$this->campaignCommander->addShareLink(/* parameters */);
-//
 //	}
 
 
@@ -555,9 +534,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testUpdateUrlByField()
 //		$this->markTestIncomplete("updateUrlByField test not implemented");
-//
 //		$this->campaignCommander->updateUrlByField(/* parameters */);
-//
 //	}
 
 
@@ -568,9 +545,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testDeleteUrl()
 //		$this->markTestIncomplete("deleteUrl test not implemented");
-//
 //		$this->campaignCommander->deleteUrl(/* parameters */);
-//
 //	}
 
 
@@ -581,9 +556,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testGetUrlByOrder()
 //		$this->markTestIncomplete("getUrlByOrder test not implemented");
-//
 //		$this->campaignCommander->getUrlByOrder(/* parameters */);
-//
 //	}
 
 
@@ -594,9 +567,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testSegmentationCreateSegment()
 //		$this->markTestIncomplete("segmentationCreateSegment test not implemented");
-//
 //		$this->campaignCommander->segmentationCreateSegment(/* parameters */);
-//
 //	}
 
 
@@ -607,9 +578,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testSegmentationDeleteSegment()
 //		$this->markTestIncomplete("segmentationDeleteSegment test not implemented");
-//
 //		$this->campaignCommander->segmentationDeleteSegment(/* parameters */);
-//
 //	}
 
 
@@ -620,9 +589,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testSegmentationAddStringDemographicCriteriaByObj()
 //		$this->markTestIncomplete("segmentationAddStringDemographicCriteriaByObj test not implemented");
-//
 //		$this->campaignCommander->segmentationAddStringDemographicCriteriaByObj(/* parameters */);
-//
 //	}
 
 
@@ -633,9 +600,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testSegmentationAddNumericDemographicCriteriaByObj()
 //		$this->markTestIncomplete("segmentationAddNumericDemographicCriteriaByObj test not implemented");
-//
 //		$this->campaignCommander->segmentationAddNumericDemographicCriteriaByObj(/* parameters */);
-//
 //	}
 
 
@@ -646,9 +611,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testSegmentationAddDateDemographicCriteriaByObj()
 //		$this->markTestIncomplete("segmentationAddDateDemographicCriteriaByObj test not implemented");
-//
 //		$this->campaignCommander->segmentationAddDateDemographicCriteriaByObj(/* parameters */);
-//
 //	}
 
 
@@ -659,9 +622,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testSegmentationAddCampaignActionCriteriaByObj()
 //		$this->markTestIncomplete("segmentationAddCampaignActionCriteriaByObj test not implemented");
-//
 //		$this->campaignCommander->segmentationAddCampaignActionCriteriaByObj(/* parameters */);
-//
 //	}
 
 
@@ -672,9 +633,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testSegmentationAddCampaignTrackableLinkCriteriaByObj()
 //		$this->markTestIncomplete("segmentationAddCampaignTrackableLinkCriteriaByObj test not implemented");
-//
 //		$this->campaignCommander->segmentationAddCampaignTrackableLinkCriteriaByObj(/* parameters */);
-//
 //	}
 
 
@@ -685,9 +644,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testSegmentationAddSerieActionCriteriaByObj()
 //		$this->markTestIncomplete("segmentationAddSerieActionCriteriaByObj test not implemented");
-//
 //		$this->campaignCommander->segmentationAddSerieActionCriteriaByObj(/* parameters */);
-//
 //	}
 
 
@@ -698,9 +655,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testSegmentationAddSerieTrackableLinkCriteriaByObj()
 //		$this->markTestIncomplete("segmentationAddSerieTrackableLinkCriteriaByObj test not implemented");
-//
 //		$this->campaignCommander->segmentationAddSerieTrackableLinkCriteriaByObj(/* parameters */);
-//
 //	}
 
 
@@ -711,9 +666,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testSegmentationAddSocialNetworkCriteriaByObj()
 //		$this->markTestIncomplete("segmentationAddSocialNetworkCriteriaByObj test not implemented");
-//
 //		$this->campaignCommander->segmentationAddSocialNetworkCriteriaByObj(/* parameters */);
-//
 //	}
 
 
@@ -724,9 +677,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testSegmentationAddRecencyCriteriaByObj()
 //		$this->markTestIncomplete("segmentationAddRecencyCriteriaByObj test not implemented");
-//
 //		$this->campaignCommander->segmentationAddRecencyCriteriaByObj(/* parameters */);
-//
 //	}
 
 
@@ -737,9 +688,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testSegmentationAddDataMartCriteriaByObj()
 //		$this->markTestIncomplete("segmentationAddDataMartCriteriaByObj test not implemented");
-//
 //		$this->campaignCommander->segmentationAddDataMartCriteriaByObj(/* parameters */);
-//
 //	}
 
 
@@ -786,9 +735,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testSegmentationDeleteCriteria()
 //		$this->markTestIncomplete("segmentationDeleteCriteria test not implemented");
-//
 //		$this->campaignCommander->segmentationDeleteCriteria(/* parameters */);
-//
 //	}
 
 
@@ -799,9 +746,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testSegmentationUpdateSegment()
 //		$this->markTestIncomplete("segmentationUpdateSegment test not implemented");
-//
 //		$this->campaignCommander->segmentationUpdateSegment(/* parameters */);
-//
 //	}
 
 
@@ -812,9 +757,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testSegmentationUpdateStringDemographicCriteriaByObj()
 //		$this->markTestIncomplete("segmentationUpdateStringDemographicCriteriaByObj test not implemented");
-//
 //		$this->campaignCommander->segmentationUpdateStringDemographicCriteriaByObj(/* parameters */);
-//
 //	}
 
 
@@ -825,9 +768,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testSegmentationUpdateNumericDemographicCriteriaByObj()
 //		$this->markTestIncomplete("segmentationUpdateNumericDemographicCriteriaByObj test not implemented");
-//
 //		$this->campaignCommander->segmentationUpdateNumericDemographicCriteriaByObj(/* parameters */);
-//
 //	}
 
 
@@ -838,9 +779,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testSegmentationUpdateDateDemographicCriteriaByObj()
 //		$this->markTestIncomplete("segmentationUpdateDateDemographicCriteriaByObj test not implemented");
-//
 //		$this->campaignCommander->segmentationUpdateDateDemographicCriteriaByObj(/* parameters */);
-//
 //	}
 
 
@@ -851,9 +790,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testSegmentationUpdateCampaignActionCriteriaByObj()
 //		$this->markTestIncomplete("segmentationUpdateCampaignActionCriteriaByObj test not implemented");
-//
 //		$this->campaignCommander->segmentationUpdateCampaignActionCriteriaByObj(/* parameters */);
-//
 //	}
 
 
@@ -864,9 +801,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testSegmentationUpdateCampaignTrackableLinkCriteriaByObj()
 //		$this->markTestIncomplete("segmentationUpdateCampaignTrackableLinkCriteriaByObj test not implemented");
-//
 //		$this->campaignCommander->segmentationUpdateCampaignTrackableLinkCriteriaByObj(/* parameters */);
-//
 //	}
 
 
@@ -877,9 +812,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testSegmentationUpdateSerieActionCriteriaByObj()
 //		$this->markTestIncomplete("segmentationUpdateSerieActionCriteriaByObj test not implemented");
-//
 //		$this->campaignCommander->segmentationUpdateSerieActionCriteriaByObj(/* parameters */);
-//
 //	}
 
 
@@ -890,9 +823,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testSegmentationUpdateSerieTrackableLinkCriteriaByObj()
 //		$this->markTestIncomplete("segmentationUpdateSerieTrackableLinkCriteriaByObj test not implemented");
-//
 //		$this->campaignCommander->segmentationUpdateSerieTrackableLinkCriteriaByObj(/* parameters */);
-//
 //	}
 
 
@@ -903,9 +834,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testSegmentationUpdateSocialNetworkCriteriaByObj()
 //		$this->markTestIncomplete("segmentationUpdateSocialNetworkCriteriaByObj test not implemented");
-//
 //		$this->campaignCommander->segmentationUpdateSocialNetworkCriteriaByObj(/* parameters */);
-//
 //	}
 
 
@@ -916,9 +845,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testSegmentationUpdateRecencyCriteriaByObj()
 //		$this->markTestIncomplete("segmentationUpdateRecencyCriteriaByObj test not implemented");
-//
 //		$this->campaignCommander->segmentationUpdateRecencyCriteriaByObj(/* parameters */);
-//
 //	}
 
 
@@ -929,9 +856,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testSegmentationUpdateDataMartCriteriaByObj()
 //		$this->markTestIncomplete("segmentationUpdateDataMartCriteriaByObj test not implemented");
-//
 //		$this->campaignCommander->segmentationUpdateDataMartCriteriaByObj(/* parameters */);
-//
 //	}
 
 
@@ -960,9 +885,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateCampaign()
 //		$this->markTestIncomplete("createCampaign test not implemented");
-//
 //		$this->campaignCommander->createCampaign(/* parameters */);
-//
 //	}
 
 
@@ -973,9 +896,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateCampaignWithAnalytics()
 //		$this->markTestIncomplete("createCampaignWithAnalytics test not implemented");
-//
 //		$this->campaignCommander->createCampaignWithAnalytics(/* parameters */);
-//
 //	}
 
 
@@ -986,9 +907,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateCampaignByObj()
 //		$this->markTestIncomplete("createCampaignByObj test not implemented");
-//
 //		$this->campaignCommander->createCampaignByObj(/* parameters */);
-//
 //	}
 
 
@@ -999,9 +918,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testDeleteCampaign()
 //		$this->markTestIncomplete("deleteCampaign test not implemented");
-//
 //		$this->campaignCommander->deleteCampaign(/* parameters */);
-//
 //	}
 
 
@@ -1012,9 +929,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testUpdateCampaign()
 //		$this->markTestIncomplete("updateCampaign test not implemented");
-//
 //		$this->campaignCommander->updateCampaign(/* parameters */);
-//
 //	}
 
 
@@ -1025,9 +940,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testUpdateCampaignByObj()
 //		$this->markTestIncomplete("updateCampaignByObj test not implemented");
-//
 //		$this->campaignCommander->updateCampaignByObj(/* parameters */);
-//
 //	}
 
 
@@ -1038,9 +951,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testPostCampaign()
 //		$this->markTestIncomplete("postCampaign test not implemented");
-//
 //		$this->campaignCommander->postCampaign(/* parameters */);
-//
 //	}
 
 
@@ -1051,9 +962,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testUnpostCampaign()
 //		$this->markTestIncomplete("unpostCampaign test not implemented");
-//
 //		$this->campaignCommander->unpostCampaign(/* parameters */);
-//
 //	}
 
 
@@ -1122,9 +1031,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testTestCampaignByGroup()
 //		$this->markTestIncomplete("testCampaignByGroup test not implemented");
-//
 //		$this->campaignCommander->testCampaignByGroup(/* parameters */);
-//
 //	}
 
 
@@ -1135,9 +1042,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testTestCampaignByMember()
 //		$this->markTestIncomplete("testCampaignByMember test not implemented");
-//
 //		$this->campaignCommander->testCampaignByMember(/* parameters */);
-//
 //	}
 
 
@@ -1148,9 +1053,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testPauseCampaign()
 //		$this->markTestIncomplete("pauseCampaign test not implemented");
-//
 //		$this->campaignCommander->pauseCampaign(/* parameters */);
-//
 //	}
 
 
@@ -1161,9 +1064,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testUnpauseCampaign()
 //		$this->markTestIncomplete("unpauseCampaign test not implemented");
-//
 //		$this->campaignCommander->unpauseCampaign(/* parameters */);
-//
 //	}
 
 
@@ -1174,9 +1075,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testGetCampaignSnapshotReport()
 //		$this->markTestIncomplete("getCampaignSnapshotReport test not implemented");
-//
 //		$this->campaignCommander->getCampaignSnapshotReport(/* parameters */);
-//
 //	}
 
 
@@ -1187,9 +1086,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateBanner()
 //		$this->markTestIncomplete("createBanner test not implemented");
-//
 //		$this->campaignCommander->createBanner(/* parameters */);
-//
 //	}
 
 
@@ -1200,9 +1097,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateBannerByObj()
 //		$this->markTestIncomplete("createBannerByObj test not implemented");
-//
 //		$this->campaignCommander->createBannerByObj(/* parameters */);
-//
 //	}
 
 
@@ -1213,9 +1108,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testDeleteBanner()
 //		$this->markTestIncomplete("deleteBanner test not implemented");
-//
 //		$this->campaignCommander->deleteBanner(/* parameters */);
-//
 //	}
 
 
@@ -1226,9 +1119,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testUpdateBanner()
 //		$this->markTestIncomplete("updateBanner test not implemented");
-//
 //		$this->campaignCommander->updateBanner(/* parameters */);
-//
 //	}
 
 
@@ -1239,9 +1130,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testUpdateBannerByObj()
 //		$this->markTestIncomplete("updateBannerByObj test not implemented");
-//
 //		$this->campaignCommander->updateBannerByObj(/* parameters */);
-//
 //	}
 
 
@@ -1252,9 +1141,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCloneBanner()
 //		$this->markTestIncomplete("cloneBanner test not implemented");
-//
 //		$this->campaignCommander->cloneBanner(/* parameters */);
-//
 //	}
 
 
@@ -1310,9 +1197,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testTrackAllBannerLinks()
 //		$this->markTestIncomplete("trackAllBannerLinks test not implemented");
-//
 //		$this->campaignCommander->trackAllBannerLinks(/* parameters */);
-//
 //	}
 
 
@@ -1323,9 +1208,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testUntrackAllBannerLinks()
 //		$this->markTestIncomplete("untrackAllBannerLinks test not implemented");
-//
 //		$this->campaignCommander->untrackAllBannerLinks(/* parameters */);
-//
 //	}
 
 
@@ -1336,9 +1219,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testTrackBannerLinkByPosition()
 //		$this->markTestIncomplete("trackBannerLinkByPosition test not implemented");
-//
 //		$this->campaignCommander->trackBannerLinkByPosition(/* parameters */);
-//
 //	}
 
 
@@ -1349,9 +1230,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testUntrackBannerLinkByOrder()
 //		$this->markTestIncomplete("untrackBannerLinkByOrder test not implemented");
-//
 //		$this->campaignCommander->untrackBannerLinkByOrder(/* parameters */);
-//
 //	}
 
 
@@ -1389,9 +1268,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateStandardBannerLink()
 //		$this->markTestIncomplete("createStandardBannerLink test not implemented");
-//
 //		$this->campaignCommander->createStandardBannerLink(/* parameters */);
-//
 //	}
 
 
@@ -1402,9 +1279,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateAndAddStandardBannerLink()
 //		$this->markTestIncomplete("createAndAddStandardBannerLink test not implemented");
-//
 //		$this->campaignCommander->createAndAddStandardBannerLink(/* parameters */);
-//
 //	}
 
 
@@ -1415,9 +1290,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateUnsubscribeBannerLink()
 //		$this->markTestIncomplete("createUnsubscribeBannerLink test not implemented");
-//
 //		$this->campaignCommander->createUnsubscribeBannerLink(/* parameters */);
-//
 //	}
 
 
@@ -1428,9 +1301,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateAndAddUnsubscribeBannerLink()
 //		$this->markTestIncomplete("createAndAddUnsubscribeBannerLink test not implemented");
-//
 //		$this->campaignCommander->createAndAddUnsubscribeBannerLink(/* parameters */);
-//
 //	}
 
 
@@ -1441,9 +1312,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreatePersonalisedBannerLink()
 //		$this->markTestIncomplete("createPersonalisedBannerLink test not implemented");
-//
 //		$this->campaignCommander->createPersonalisedBannerLink(/* parameters */);
-//
 //	}
 
 
@@ -1454,9 +1323,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateAndAddPersonalisedBannerLink()
 //		$this->markTestIncomplete("createAndAddPersonalisedBannerLink test not implemented");
-//
 //		$this->campaignCommander->createAndAddPersonalisedBannerLink(/* parameters */);
-//
 //	}
 
 
@@ -1467,9 +1334,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateUpdateBannerLink()
 //		$this->markTestIncomplete("createUpdateBannerLink test not implemented");
-//
 //		$this->campaignCommander->createUpdateBannerLink(/* parameters */);
-//
 //	}
 
 
@@ -1480,9 +1345,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateAndAddUpdateBannerLink()
 //		$this->markTestIncomplete("createAndAddUpdateBannerLink test not implemented");
-//
 //		$this->campaignCommander->createAndAddUpdateBannerLink(/* parameters */);
-//
 //	}
 
 
@@ -1493,9 +1356,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateActionBannerLink()
 //		$this->markTestIncomplete("createActionBannerLink test not implemented");
-//
 //		$this->campaignCommander->createActionBannerLink(/* parameters */);
-//
 //	}
 
 
@@ -1506,9 +1367,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateAndAddActionBannerLink()
 //		$this->markTestIncomplete("createAndAddActionBannerLink test not implemented");
-//
 //		$this->campaignCommander->createAndAddActionBannerLink(/* parameters */);
-//
 //	}
 
 
@@ -1519,9 +1378,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateMirrorBannerLink()
 //		$this->markTestIncomplete("createMirrorBannerLink test not implemented");
-//
 //		$this->campaignCommander->createMirrorBannerLink(/* parameters */);
-//
 //	}
 
 
@@ -1532,9 +1389,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateAndAddMirrorBannerLink()
 //		$this->markTestIncomplete("createAndAddMirrorBannerLink test not implemented");
-//
 //		$this->campaignCommander->createAndAddMirrorBannerLink(/* parameters */);
-//
 //	}
 
 
@@ -1545,9 +1400,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testUpdateBannerLinkByField()
 //		$this->markTestIncomplete("updateBannerLinkByField test not implemented");
-//
 //		$this->campaignCommander->updateBannerLinkByField(/* parameters */);
-//
 //	}
 
 
@@ -1558,9 +1411,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testGetBannerLinkByOrder()
 //		$this->markTestIncomplete("getBannerLinkByOrder test not implemented");
-//
 //		$this->campaignCommander->getBannerLinkByOrder(/* parameters */);
-//
 //	}
 
 
@@ -1571,9 +1422,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateTestGroup()
 //		$this->markTestIncomplete("createTestGroup test not implemented");
-//
 //		$this->campaignCommander->createTestGroup(/* parameters */);
-//
 //	}
 
 
@@ -1584,9 +1433,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testCreateTestGroupByObj()
 //		$this->markTestIncomplete("createTestGroupByObj test not implemented");
-//
 //		$this->campaignCommander->createTestGroupByObj(/* parameters */);
-//
 //	}
 
 
@@ -1597,9 +1444,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testAddTestMember()
 //		$this->markTestIncomplete("addTestMember test not implemented");
-//
 //		$this->campaignCommander->addTestMember(/* parameters */);
-//
 //	}
 
 
@@ -1610,9 +1455,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testRemoveTestMember()
 //		$this->markTestIncomplete("removeTestMember test not implemented");
-//
 //		$this->campaignCommander->removeTestMember(/* parameters */);
-//
 //	}
 
 
@@ -1623,9 +1466,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testDeleteTestGroup()
 //		$this->markTestIncomplete("deleteTestGroup test not implemented");
-//
 //		$this->campaignCommander->deleteTestGroup(/* parameters */);
-//
 //	}
 
 
@@ -1636,9 +1477,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	{
 //		// TODO Auto-generated CampaignCommanderTest->testUpdateTestGroupByObj()
 //		$this->markTestIncomplete("updateTestGroupByObj test not implemented");
-//
 //		$this->campaignCommander->updateTestGroupByObj(/* parameters */);
-//
 //	}
 
 

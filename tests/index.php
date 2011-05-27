@@ -7,22 +7,53 @@ require_once '../campaign_commander.php';
 // create instance
 $ccm = new CampaignCommander(LOGIN, PASSWORD, KEY);
 
-// @todo test me $response = $ccm->createEmailMessage($name, $description, $subject, $from, $fromEmail, $to, $body, $encoding, $replyTo, $replyToEmail, $bounceback = false, $unsubscribe = false, $unsublinkpage = null);
-// @todo test me $response = $ccm->createEmailMessageByObj(array $message);
-// @todo test me $response = $ccm->createSmsMessage($name, $desc, $from, $body);
-// @todo test me $response = $ccm->createSmsMessageByObj(array $message);
-// @todo test me $response = $ccm->deleteMessage($id);
-// @todo test me $response = $ccm->updateMessage($id, $field, $value);
-// @todo test me $response = $ccm->updateMessageByObj(array $message);
-// @todo test me $response = $ccm->cloneMessage($id, $newName);
+//$response = $ccm->createEmailMessage('TEST (remove me)', '', 'subject', 'from', 'email@mhg.ccmdemail.net', 'to', '[EMV TEXTPART]body', 'utf-8', 'replyTo', 'replyTo@mail.be');
+//$response = $ccm->createEmailMessageByObj(array(
+//	'body' => '[EMV TEXTPART]body',
+//	'isBounceback' => 0,
+//
+//	'description' => '',
+//	'encoding' => 'utf-8',
+//	'from' => 'from',
+//	'fromEmail' => 'email@mhg.ccmdemail.net',
+////	'id' => null,
+//	'name' => 'TEST (remove me)',
+//	'replyTo' => 'replyTo',
+//	'replyToEmail' => 'replyTo@mail.be',
+//	'subject' => 'subject',
+//	'to' => 'to',
+//	'hotmailUnsubFlg' => 0
+//));
+//$response = $ccm->createSmsMessage('REMOVE ME', '', 'from', '[EMV SMSPART]body');
+// @todo Internal error $response = $ccm->createSmsMessageByObj(array(
+//	'type' => 'SMS'
+//));
+//$response = $ccm->deleteMessage('1105008095');
+//$response = $ccm->updateMessage('1105008095', 'name', 'REMOVE ME');
+//$response = $ccm->updateMessageByObj(array(
+//	'body' => '[EMV TEXTPART]body',
+//	'isBounceback' => 0,
+//	'description' => '',
+//	'encoding' => 'utf-8',
+//	'from' => 'from',
+//	'fromEmail' => 'email@mhg.ccmdemail.net',
+//	'id' => '1105009685',
+//	'name' => 'REMOVE ME',
+//	'replyTo' => 'replyTo',
+//	'replyToEmail' => 'replyTo@mail.be',
+//	'subject' => 'subject',
+//	'to' => 'to',
+//	'hotmailUnsubFlg' => 0
+//));
+//$response = $ccm->cloneMessage('1105008095', 'REMOVE ME TO');
 //$response = $ccm->getMessage('1104992528');
 //$response = $ccm->getLastEmailMessages(10);
 //$response = $ccm->getLastSmsMessages(10);
 //$response = $ccm->getEmailMessagesByField('from', 'Capitole Gent', 10);
-// @todo test me $response = $ccm->getSmsMessagesByField($field, $value, $limit);
+//$response = $ccm->getSmsMessagesByField('name', 'REMOVE', 10);
 //$response = $ccm->getMessagesByPeriod(mktime(00, 00, 00, 01, 01, 2010), mktime(23, 59, 59, 12, 31, 2010));
 //$response = $ccm->getEmailMessagePreview('1104992528');
-// @todo test me $response = $ccm->getSmsMessagePreview($messageId);
+//$response = $ccm->getSmsMessagePreview('1105009621');
 // @todo test me $response = $ccm->trackAllLinks($id);
 // @todo test me $response = $ccm->untrackAllLinks($id);
 // @todo test me $response = $ccm->trackLinkByPosition($id, $position, $part = 'HTML');
@@ -145,7 +176,7 @@ $ccm = new CampaignCommander(LOGIN, PASSWORD, KEY);
 // @todo test me $response = $ccm->deleteTestGroup($groupId);
 // @todo test me $response = $ccm->updateTestGroupByObj(array $testGroup);
 //$response = $ccm->getTestGroup('1000137610');
-$response = $ccm->getClientTestGroups();
+//$response = $ccm->getClientTestGroups();
 
 // output (Spoon::dump())
 ob_start();
