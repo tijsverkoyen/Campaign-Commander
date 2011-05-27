@@ -198,6 +198,16 @@ class CampaignCommander
 				// more detailed message available
 				if(isset($response->detail->ConnectionServiceException->description)) $message = (string) $response->detail->ConnectionServiceException->description;
 
+				// invalid token?
+				if($message == 'Please enter a valid token to validate your connection.')
+				{
+					// reset token
+					$this->token = null;
+
+					// try again
+					return self::doCall($method, $parameters);
+				}
+
 				// internal debugging enabled
 				if(self::DEBUG)
 				{
