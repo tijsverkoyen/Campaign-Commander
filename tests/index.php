@@ -51,7 +51,7 @@ $ccm = new CampaignCommander(LOGIN, PASSWORD, KEY);
 // @todo test me $response = $ccm->addShareLink($messageId, $linkType, $buttonUrl = null, $language = null);
 // @todo test me $response = $ccm->updateUrlByField($messageId, $order, $field, $value);
 // @todo test me $response = $ccm->deleteUrl($messageId, $order);
-//$response = $ccm->getUrlByOrder('1104992528', 1);
+// @todo test me $response = $ccm->getUrlByOrder('1104992528', 1);
 
 // @todo test me $response = $ccm->segmentationCreateSegment($name, $sampleType, $description = null, $sampleRate = null);
 // @todo test me $response = $ccm->segmentationDeleteSegment($id);
@@ -92,17 +92,17 @@ $ccm = new CampaignCommander(LOGIN, PASSWORD, KEY);
 // @todo test me $response = $ccm->updateCampaignByObj(array $campaign);
 // @todo test me $response = $ccm->postCampaign($id);
 // @todo test me $response = $ccm->unpostCampaign($id);
-// @todo test me $response = $ccm->getCampaign($id);
-// @todo test me $response = $ccm->getCampaignsByField($field, $value, $limit);
-// @todo test me $response = $ccm->getCampaignsByStatus($status);
-// @todo test me $response = $ccm->getCampaignsByPeriod($dateBegin, $dateEnd);
-// @todo test me $response = $ccm->getCampaignStatus($id);
-// @todo test me $response = $ccm->getLastCampaigns($limit);
+//$response = $ccm->getCampaign('1106582188');
+//$response = $ccm->getCampaignsByField('name', 'DC', 10);
+//$response = $ccm->getCampaignsByStatus('COMPLETED');
+//$response = $ccm->getCampaignsByPeriod(mktime(00, 00, 00, 01, 01, 2010), mktime(23, 59, 59, 12, 31, 2010));
+//$response = $ccm->getCampaignStatus('1106582188');
+//$response = $ccm->getLastCampaigns(10);
 // @todo test me $response = $ccm->testCampaignByGroup($id, $groupId);
 // @todo test me $response = $ccm->testCampaignByMember($id, $memberId);
 // @todo test me $response = $ccm->pauseCampaign($id);
 // @todo test me $response = $ccm->unpauseCampaign($id);
-// @todo test me $response = $ccm->getCampaignSnapshotReport($id);
+// @todo internal error $response = $ccm->getCampaignSnapshotReport('1106582188');
 
 // @todo test me $response = $ccm->createBanner($name, $contentType, $description = null, $content = null);
 // @todo test me $response = $ccm->createBannerByObj(array $banner);
@@ -110,18 +110,18 @@ $ccm = new CampaignCommander(LOGIN, PASSWORD, KEY);
 // @todo test me $response = $ccm->updateBanner($id, $field, $value = null);
 // @todo test me $response = $ccm->updateBannerByObj(array $banner);
 // @todo test me $response = $ccm->cloneBanner($id, $name);
-// @todo test me $response = $ccm->getBannerPreview($id);
-// @todo test me $response = $ccm->getBanner($id);
-// @todo test me $response = $ccm->getBannersByField($field, $value, $limit);
-// @todo test me $response = $ccm->getBannersByPeriod($dateStart, $dateEnd);
-// @todo test me $response = $ccm->getLastBanners($limit);
-// @todo test me $response = $ccm->trackAllBannerLinks($id);
+//$response = $ccm->getBannerPreview('1018382');
+//$response = $ccm->getBanner('1018382');
+//$response = $ccm->getBannersByField('name', 'KAL MH Footer FR 04 2011', 10);
+//$response = $ccm->getBannersByPeriod(mktime(00, 00, 00, 01, 01, 2010), mktime(23, 59, 59, 12, 31, 2011));
+//$response = $ccm->getLastBanners(10);
+// @todo test me $response = $ccm->trackAllBannerLinks('1018382');
 // @todo test me $response = $ccm->untrackAllBannerLinks($id);
 // @todo test me $response = $ccm->trackBannerLinkByPosition($id, $position);
 // @todo test me $response = $ccm->untrackBannerLinkByOrder($id, $order);
-// @todo test me $response = $ccm->getAllBannerTrackedLinks($id);
-// @todo test me $response = $ccm->getAllUnusedBannerTrackedLinks($id);
-// @todo test me $response = $ccm->getAllBannerTrackableLinks($id);
+//$response = $ccm->getAllBannerTrackedLinks('1018382');
+//$response = $ccm->getAllUnusedBannerTrackedLinks('1018382');
+//$response = $ccm->getAllBannerTrackableLinks('1018382');
 
 // @todo test me $response = $ccm->createStandardBannerLink($id, $name, $url);
 // @todo test me $response = $ccm->createAndAddStandardBannerLink($id, $name, $url);
@@ -144,12 +144,18 @@ $ccm = new CampaignCommander(LOGIN, PASSWORD, KEY);
 // @todo test me $response = $ccm->removeTestMember($memberId, $groupId);
 // @todo test me $response = $ccm->deleteTestGroup($groupId);
 // @todo test me $response = $ccm->updateTestGroupByObj(array $testGroup);
-// @todo test me $response = $ccm->getTestGroup($groupId);
-// @todo test me $response = $ccm->getClientTestGroups();
+//$response = $ccm->getTestGroup('1000137610');
+$response = $ccm->getClientTestGroups();
 
-// output
-echo '<pre>';
+// output (Spoon::dump())
+ob_start();
 var_dump($response);
-echo '</pre>';
+$output = ob_get_clean();
+
+// cleanup the output
+$output = preg_replace('/\]\=\>\n(\s+)/m', '] => ', $output);
+
+// print
+echo '<pre>' . htmlspecialchars($output, ENT_QUOTES, 'UTF-8') . '</pre>';
 
 ?>
