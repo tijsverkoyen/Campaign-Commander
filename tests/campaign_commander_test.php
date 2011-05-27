@@ -234,11 +234,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testGetMessagesByPeriod()
 	{
-		// TODO Auto-generated CampaignCommanderTest->testGetMessagesByPeriod()
-		$this->markTestIncomplete("getMessagesByPeriod test not implemented");
-
 		$this->assertType('array', $this->campaignCommander->getMessagesByPeriod(1262300400, 1325372399));
-
 	}
 
 
@@ -256,11 +252,13 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testGetSmsMessagePreview()
 	{
-		// TODO Auto-generated CampaignCommanderTest->testGetSmsMessagePreview()
-		$this->markTestIncomplete("getSmsMessagePreview test not implemented");
+		// create the message
+		$var = $this->campaignCommander->createSmsMessage('REMOVE ME', '', 'from', '[EMV SMSPART]body');
 
-		$this->campaignCommander->getSmsMessagePreview(/* parameters */);
+		$this->assertEquals('body', $this->campaignCommander->getSmsMessagePreview($var));
 
+		// delete message
+		$this->campaignCommander->deleteMessage($var);
 	}
 
 
@@ -971,11 +969,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testGetCampaign()
 	{
-		// TODO Auto-generated CampaignCommanderTest->testGetCampaign()
-		$this->markTestIncomplete("getCampaign test not implemented");
-
 		$this->assertObjectHasAttribute('id', $this->campaignCommander->getCampaign('1106582188'));
-
 	}
 
 
