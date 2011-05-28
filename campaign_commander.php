@@ -18,6 +18,7 @@
  * - implemented all banner-methods.
  * - implemented all banner-link-management-methods.
  * - correct casting
+ * - longs will be converted to string, because if you have a large number of members/campaigns it will overflow.
  *
  * License
  * Copyright (c), Tijs Verkoyen. All rights reserved.
@@ -177,7 +178,11 @@ class CampaignCommander
 							 'trace' => self::DEBUG,
 							 'exceptions' => false,
 							 'connection_timeout' => $this->getTimeOut(),
-							 'user_agent' => $this->getUserAgent());
+							 'user_agent' => $this->getUserAgent(),
+							 'typemap' => array(
+												array('type_ns' => 'http://www.w3.org/2001/XMLSchema', 'type_name' => 'long', 'to_xml' => array(__CLASS__, 'toLongXML'), 'from_xml' => array(__CLASS__, 'fromLongXML'))	// map long to string, because a long can cause an integer overflow
+											)
+						);
 
 			// create client
 			$this->soapClient = new SoapClient($this->getServer() . '/' . self::WSDL_URL, $options);
@@ -282,6 +287,30 @@ class CampaignCommander
 
 		// return the response
 		return $response->return;
+	}
+
+
+	/**
+	 * Convert a long into a string
+	 *
+	 * @return	string
+	 * @param	string $value	The value to convert.
+	 */
+	public static function fromLongXML($value)
+	{
+		return (string) strip_tags($value);
+	}
+
+
+	/**
+	 * Convert a x into a long
+	 *
+	 * @return	string
+	 * @param	string $value	The value to convert.
+	 */
+	public static function toLongXML($value)
+	{
+		return '<long>' . $value . '</long>';
 	}
 
 
