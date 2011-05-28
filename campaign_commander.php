@@ -17,6 +17,7 @@
  * - implemented all campaign-methods.
  * - implemented all banner-methods.
  * - implemented all banner-link-management-methods.
+ * - correct casting
  *
  * License
  * Copyright (c), Tijs Verkoyen. All rights reserved.
@@ -743,7 +744,7 @@ class CampaignCommander
 	{
 		// validate
 		$allowedParts = array('HTML', 'text');
-		if(!in_array($part, $allowedParts)) throw new CampaignCommanderException('Invalid part ('. $parrt .'), allowed values are: '. implode(', ', $allowedParts) .'.');
+		if(!in_array($part, $allowedParts)) throw new CampaignCommanderException('Invalid part (' . $part . '), allowed values are: ' . implode(', ', $allowedParts) . '.');
 
 		// build parameters
 		$parameters = array();
@@ -1925,7 +1926,7 @@ class CampaignCommander
 		$parameters['emaildedupflg'] = (bool) $emaildedupfig;
 
 		// make the call
-		return $this->doCall('createCampaign', $parameters);
+		return (string) $this->doCall('createCampaign', $parameters);
 	}
 
 
@@ -1956,7 +1957,7 @@ class CampaignCommander
 		$parameters['emaildedupflg'] = (bool) $emaildedupfig;
 
 		// make the call
-		return $this->doCall('createCampaignWithAnalytics', $parameters);
+		return (string) $this->doCall('createCampaignWithAnalytics', $parameters);
 	}
 
 
@@ -1973,7 +1974,7 @@ class CampaignCommander
 		$parameters['campaign'] = $campaign;
 
 		// make the call
-		return $this->doCall('createCampaignByObj', $parameters);
+		return (string) $this->doCall('createCampaignByObj', $parameters);
 	}
 
 
@@ -1990,7 +1991,7 @@ class CampaignCommander
 		$parameters['id'] = (string) $id;
 
 		// make the call
-		return $this->doCall('deleteCampaign', $parameters);
+		return (bool) $this->doCall('deleteCampaign', $parameters);
 	}
 
 
@@ -2011,7 +2012,7 @@ class CampaignCommander
 		$parameters['value'] = $value;
 
 		// make the call
-		return $this->doCall('updateCampaign', $parameters);
+		return (bool) $this->doCall('updateCampaign', $parameters);
 	}
 
 
@@ -2028,7 +2029,7 @@ class CampaignCommander
 		$parameters['campaign'] = $campaign;
 
 		// make the call
-		return $this->doCall('updateCampaignByObj', $parameters);
+		return (bool) $this->doCall('updateCampaignByObj', $parameters);
 	}
 
 
@@ -2045,7 +2046,7 @@ class CampaignCommander
 		$parameters['id'] = (string) $id;
 
 		// make the call
-		return $this->doCall('postCampaign', $parameters);
+		return (bool) $this->doCall('postCampaign', $parameters);
 	}
 
 
@@ -2062,7 +2063,7 @@ class CampaignCommander
 		$parameters['id'] = (string) $id;
 
 		// make the call
-		return $this->doCall('unpostCampaign', $parameters);
+		return (bool) $this->doCall('unpostCampaign', $parameters);
 	}
 
 
@@ -2285,7 +2286,7 @@ class CampaignCommander
 		if($content !== null) $parameters['content'] = '<!CDATA[' . $content . ']]>';
 
 		// make the call
-		return $this->doCall('createBanner', $parameters);
+		return (string) $this->doCall('createBanner', $parameters);
 	}
 
 
@@ -2302,7 +2303,7 @@ class CampaignCommander
 		$parameters['banner'] = $banner;
 
 		// make the call
-		return $this->doCall('createBannerByObj', $parameters);
+		return (string) $this->doCall('createBannerByObj', $parameters);
 	}
 
 
@@ -2319,7 +2320,7 @@ class CampaignCommander
 		$parameters['id'] = (string) $id;
 
 		// make the call
-		return $this->doCall('deleteBanner', $parameters);
+		return (bool) $this->doCall('deleteBanner', $parameters);
 	}
 
 
@@ -2340,7 +2341,7 @@ class CampaignCommander
 		if($value !== null) $parameters['value'] = $value;
 
 		// make the call
-		return $this->doCall('updateBanner', $parameters);
+		return (bool) $this->doCall('updateBanner', $parameters);
 	}
 
 
@@ -2357,7 +2358,7 @@ class CampaignCommander
 		$parameters['banner'] = $banner;
 
 		// make the call
-		return $this->doCall('updateBannerByObj', $parameters);
+		return (bool) $this->doCall('updateBannerByObj', $parameters);
 	}
 
 
@@ -2376,7 +2377,7 @@ class CampaignCommander
 		$parameters['newName'] = (string) $name;
 
 		// make the call
-		return $this->doCall('cloneBanner', $parameters);
+		return (string) $this->doCall('cloneBanner', $parameters);
 	}
 
 
@@ -2401,7 +2402,7 @@ class CampaignCommander
 	 * Retrieves a banner.
 	 *
 	 * @return	object		The banner
- 	 * @param	string $id	The ID of the banner.
+	 * @param	string $id	The ID of the banner.
 	 */
 	public function getBanner($id)
 	{
