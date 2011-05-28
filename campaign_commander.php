@@ -40,7 +40,7 @@
 class CampaignCommander
 {
 	// internal constant to enable/disable debugging
-	const DEBUG = true;
+	const DEBUG = false;
 
 	// URL for the api
 	const WSDL_URL = 'apiccmd/services/CcmdService?wsdl';
