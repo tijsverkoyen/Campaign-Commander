@@ -55,7 +55,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 	public function testGetUserAgent()
 	{
 		$this->campaignCommander->setUserAgent('testing/1.0.0');
-		$this->assertEquals('PHP Campaign Commander/'. CampaignCommander::VERSION .' testing/1.0.0', $this->campaignCommander->getUserAgent());
+		$this->assertEquals('PHP Campaign Commander/' . CampaignCommander::VERSION . ' testing/1.0.0', $this->campaignCommander->getUserAgent());
 	}
 
 
@@ -876,26 +876,36 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 	}
 
 
-//	/**
-//	 * Tests CampaignCommander->createCampaign()
-//	 */
-//	public function testCreateCampaign()
-//	{
-//		// TODO Auto-generated CampaignCommanderTest->testCreateCampaign()
-//		$this->markTestIncomplete("createCampaign test not implemented");
-//		$this->campaignCommander->createCampaign(/* parameters */);
-//	}
+	/**
+	 * Tests CampaignCommander->createCampaign()
+	 */
+	public function testCreateCampaign()
+	{
+		$messageId = $this->campaignCommander->createEmailMessage('TEST (remove me)', '', 'subject', 'from', 'email@mhg.ccmdemail.net', 'to', '[EMV TEXTPART]body', 'utf-8', 'replyTo', 'replyTo@mail.be');
+		$var = $this->campaignCommander->createCampaign('REMOVE ME', time(), $messageId, '1105024728');
+
+		$this->assertType('string', $var);
+
+		// cleanup
+		$this->campaignCommander->deleteCampaign($var);
+		$this->campaignCommander->deleteMessage($messageId);
+	}
 
 
-//	/**
-//	 * Tests CampaignCommander->createCampaignWithAnalytics()
-//	 */
-//	public function testCreateCampaignWithAnalytics()
-//	{
-//		// TODO Auto-generated CampaignCommanderTest->testCreateCampaignWithAnalytics()
-//		$this->markTestIncomplete("createCampaignWithAnalytics test not implemented");
-//		$this->campaignCommander->createCampaignWithAnalytics(/* parameters */);
-//	}
+	/**
+	 * Tests CampaignCommander->createCampaignWithAnalytics()
+	 */
+	public function testCreateCampaignWithAnalytics()
+	{
+		$messageId = $this->campaignCommander->createEmailMessage('TEST (remove me)', '', 'subject', 'from', 'email@mhg.ccmdemail.net', 'to', '[EMV TEXTPART]body', 'utf-8', 'replyTo', 'replyTo@mail.be');
+		$var = $this->campaignCommander->createCampaignWithAnalytics('REMOVE ME', time(), $messageId, '1105024728');
+
+		$this->assertType('string', $var);
+
+		// cleanup
+		$this->campaignCommander->deleteCampaign($var);
+		$this->campaignCommander->deleteMessage($messageId);
+	}
 
 
 //	/**
@@ -909,15 +919,19 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	}
 
 
-//	/**
-//	 * Tests CampaignCommander->deleteCampaign()
-//	 */
-//	public function testDeleteCampaign()
-//	{
-//		// TODO Auto-generated CampaignCommanderTest->testDeleteCampaign()
-//		$this->markTestIncomplete("deleteCampaign test not implemented");
-//		$this->campaignCommander->deleteCampaign(/* parameters */);
-//	}
+	/**
+	 * Tests CampaignCommander->deleteCampaign()
+	 */
+	public function testDeleteCampaign()
+	{
+		$messageId = $this->campaignCommander->createEmailMessage('TEST (remove me)', '', 'subject', 'from', 'email@mhg.ccmdemail.net', 'to', '[EMV TEXTPART]body', 'utf-8', 'replyTo', 'replyTo@mail.be');
+		$var = $this->campaignCommander->createCampaign('REMOVE ME', time(), $messageId, '1105024728');
+
+		$this->assertTrue($this->campaignCommander->deleteCampaign($var));
+
+		// cleanup
+		$this->campaignCommander->deleteMessage($messageId);
+	}
 
 
 //	/**
@@ -1073,15 +1087,17 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	}
 
 
-//	/**
-//	 * Tests CampaignCommander->createBanner()
-//	 */
-//	public function testCreateBanner()
-//	{
-//		// TODO Auto-generated CampaignCommanderTest->testCreateBanner()
-//		$this->markTestIncomplete("createBanner test not implemented");
-//		$this->campaignCommander->createBanner(/* parameters */);
-//	}
+	/**
+	 * Tests CampaignCommander->createBanner()
+	 */
+	public function testCreateBanner()
+	{
+		$var = $this->campaignCommander->createBanner('REMOVE ME', 'TEXT', null, 'BODY');
+		$this->assertType('string', $var);
+
+		// cleanup
+		$this->campaignCommander->deleteBanner($var);
+	}
 
 
 //	/**
@@ -1095,26 +1111,27 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	}
 
 
-//	/**
-//	 * Tests CampaignCommander->deleteBanner()
-//	 */
-//	public function testDeleteBanner()
-//	{
-//		// TODO Auto-generated CampaignCommanderTest->testDeleteBanner()
-//		$this->markTestIncomplete("deleteBanner test not implemented");
-//		$this->campaignCommander->deleteBanner(/* parameters */);
-//	}
+	/**
+	 * Tests CampaignCommander->deleteBanner()
+	 */
+	public function testDeleteBanner()
+	{
+		$var = $this->campaignCommander->createBanner('REMOVE ME', 'TEXT', null, 'BODY');
+		$this->assertTrue($this->campaignCommander->deleteBanner($var));
+	}
 
 
-//	/**
-//	 * Tests CampaignCommander->updateBanner()
-//	 */
-//	public function testUpdateBanner()
-//	{
-//		// TODO Auto-generated CampaignCommanderTest->testUpdateBanner()
-//		$this->markTestIncomplete("updateBanner test not implemented");
-//		$this->campaignCommander->updateBanner(/* parameters */);
-//	}
+	/**
+	 * Tests CampaignCommander->updateBanner()
+	 */
+	public function testUpdateBanner()
+	{
+		$var = $this->campaignCommander->createBanner('REMOVE ME', 'TEXT', null, 'BODY');
+		$this->assertTrue($this->campaignCommander->updateBanner($var, 'name', 'TEMP'));
+
+		// cleanup
+		$this->campaignCommander->deleteBanner($var);
+	}
 
 
 //	/**
@@ -1128,15 +1145,20 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	}
 
 
-//	/**
-//	 * Tests CampaignCommander->cloneBanner()
-//	 */
-//	public function testCloneBanner()
-//	{
-//		// TODO Auto-generated CampaignCommanderTest->testCloneBanner()
-//		$this->markTestIncomplete("cloneBanner test not implemented");
-//		$this->campaignCommander->cloneBanner(/* parameters */);
-//	}
+	/**
+	 * Tests CampaignCommander->cloneBanner()
+	 */
+	public function testCloneBanner()
+	{
+		$var = $this->campaignCommander->createBanner('REMOVE ME', 'TEXT', null, 'BODY');
+		$var2 = $this->campaignCommander->cloneBanner($var, 'NEW');
+
+		$this->assertType('string', $var2);
+
+		// cleanup
+		$this->campaignCommander->deleteBanner($var);
+		$this->campaignCommander->deleteBanner($var2);
+	}
 
 
 	/**

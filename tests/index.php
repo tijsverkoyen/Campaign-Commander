@@ -84,7 +84,7 @@ $ccm = new CampaignCommander(LOGIN, PASSWORD, KEY);
 // @todo test me $response = $ccm->deleteUrl($messageId, $order);
 // @todo test me $response = $ccm->getUrlByOrder('1104992528', 1);
 
-// @todo test me $response = $ccm->segmentationCreateSegment($name, $sampleType, $description = null, $sampleRate = null);
+// @todo internal error $response = $ccm->segmentationCreateSegment('REMOVE ME', 'ALL');
 // @todo test me $response = $ccm->segmentationDeleteSegment($id);
 // @todo test me $response = $ccm->segmentationAddStringDemographicCriteriaByObj(array $stringDemographicCriteria);
 // @todo test me $response = $ccm->segmentationAddNumericDemographicCriteriaByObj(array $numericDemographicCriteria);
@@ -115,10 +115,10 @@ $ccm = new CampaignCommander(LOGIN, PASSWORD, KEY);
 //$response = $ccm->segmentationCount('1104998848');
 //$response = $ccm->segmentationDistinctCount('1104998848');
 
-// @todo test me $response = $ccm->createCampaign($name, $sendDate, $messageId, $mailingListId, $description = null, $notifProgress = false, $postClickTracking = false, $emaildedupfig = false);
-// @todo test me $response = $ccm->createCampaignWithAnalytics($name, $sendDate, $messageId, $mailingListId, $description = null, $notifProgress = false, $postClickTracking = false, $emaildedupfig = false);
+//$response = $ccm->createCampaign('REMOVE ME', time(), 1105016566, 1105024728);
+//$response = $ccm->createCampaignWithAnalytics('REMOVE ME', time(), 1105016566, 1105024728);
 // @todo test me $response = $ccm->createCampaignByObj(array $campaign);
-// @todo test me $response = $ccm->deleteCampaign($id);
+//$response = $ccm->deleteCampaign('1108005887');
 // @todo test me $response = $ccm->updateCampaign($id, $field, $value);
 // @todo test me $response = $ccm->updateCampaignByObj(array $campaign);
 // @todo test me $response = $ccm->postCampaign($id);
@@ -135,11 +135,20 @@ $ccm = new CampaignCommander(LOGIN, PASSWORD, KEY);
 // @todo test me $response = $ccm->unpauseCampaign($id);
 // @todo internal error $response = $ccm->getCampaignSnapshotReport('1106582188');
 
-// @todo test me $response = $ccm->createBanner($name, $contentType, $description = null, $content = null);
-// @todo test me $response = $ccm->createBannerByObj(array $banner);
-// @todo test me $response = $ccm->deleteBanner($id);
-// @todo test me $response = $ccm->updateBanner($id, $field, $value = null);
-// @todo test me $response = $ccm->updateBannerByObj(array $banner);
+//$response = $ccm->createBanner('REMOVE ME', 'TEXT', null, 'BODY');
+// @todo Internal error $response = $ccm->createBannerByObj(array(
+//	'id' => null,
+//	'content' => 'BODY',
+//	'contentType' => 'TEXT',
+//	'name' => 'REMOVE ME'
+//));
+//$response = $ccm->deleteBanner('1020562');
+//$response = $ccm->updateBanner('1020582', 'Name', 'TEMP');
+// @todo Internal error $response = $ccm->updateBannerByObj(array(
+//	'id' => '1020582',
+//	'content' => 'MEKKER',
+//	'name' => 'REMOVE ME'
+//));
 // @todo test me $response = $ccm->cloneBanner($id, $name);
 //$response = $ccm->getBannerPreview('1018382');
 //$response = $ccm->getBanner('1018382');
@@ -169,9 +178,9 @@ $ccm = new CampaignCommander(LOGIN, PASSWORD, KEY);
 // @todo test me $response = $ccm->updateBannerLinkByField($id, $order, $field, $value = null);
 // @todo test me $response = $ccm->getBannerLinkByOrder($id, $order);
 
-// @todo test me $response = $ccm->createTestGroup($name);
+//$response = $ccm->createTestGroup('TEST');
 // @todo test me $response = $ccm->createTestGroupByObj(array $testGroup);
-// @todo test me $response = $ccm->addTestMember($memberId, $groupId);
+//$response = $ccm->addTestMember('1043875306833', '1000201961');
 // @todo test me $response = $ccm->removeTestMember($memberId, $groupId);
 // @todo test me $response = $ccm->deleteTestGroup($groupId);
 // @todo test me $response = $ccm->updateTestGroupByObj(array $testGroup);
