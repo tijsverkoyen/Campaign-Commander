@@ -176,7 +176,7 @@ class CampaignCommander
 			// build options
 			$options = array('soap_version' => SOAP_1_1,
 							 'trace' => self::DEBUG,
-							 'exceptions' => false,
+							 'exceptions' => true,
 							 'connection_timeout' => $this->getTimeOut(),
 							 'user_agent' => $this->getUserAgent(),
 							 'typemap' => array(
@@ -459,7 +459,7 @@ class CampaignCommander
 	/**
 	 * Close the connection
 	 *
-	 * @return	bool	true if the connection was closes, otherwise false
+	 * @return	bool	true if the connection was closes, otherwise false.
 	 */
 	public function closeApiConnection()
 	{
