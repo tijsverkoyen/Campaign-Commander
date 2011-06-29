@@ -11,12 +11,11 @@ $ccm = new CampaignCommander(LOGIN, PASSWORD, KEY);
 //$response = $ccm->createEmailMessageByObj(array(
 //	'body' => '[EMV TEXTPART]body',
 //	'isBounceback' => 0,
-//	'id' => null,
-//	'description' => '',
+//	'description' => 'blaat',
 //	'encoding' => 'utf-8',
 //	'from' => 'from',
 //	'fromEmail' => 'email@mhg.ccmdemail.net',
-//	'id' => null,
+//	'id' => 0,
 //	'name' => 'TEST (remove me)',
 //	'replyTo' => 'replyTo',
 //	'replyToEmail' => 'replyTo@mail.be',
@@ -25,13 +24,15 @@ $ccm = new CampaignCommander(LOGIN, PASSWORD, KEY);
 //	'hotmailUnsubFlg' => 0
 //));
 //$response = $ccm->createSmsMessage('REMOVE ME', '', 'from', '[EMV SMSPART]body');
-// @todo Internal error $response = $ccm->createSmsMessageByObj(array(
-//	'id' => null,
+//$response = $ccm->createSmsMessageByObj(array(
+//	'id' => 0,
+//	'name' => 'REMOVE ME',
+//	'body' => '[EMV SMSPART]body',
 //	'type' => 'SMS',
 //	'hotmailUnsubFlg' => false,
 //	'isBounceback' => false
 //));
-//$response = $ccm->deleteMessage('1105008095');
+//$response = $ccm->deleteMessage('1105239351');
 //$response = $ccm->updateMessage('1105008095', 'name', 'REMOVE ME');
 //$response = $ccm->updateMessageByObj(array(
 //	'body' => '[EMV TEXTPART]body',
@@ -120,7 +121,17 @@ $ccm = new CampaignCommander(LOGIN, PASSWORD, KEY);
 
 //$response = $ccm->createCampaign('REMOVE ME', mktime(00, 00, 00, 06, 20, 2025), 1105236574, 1105024728);
 //$response = $ccm->createCampaignWithAnalytics('REMOVE ME', time(), 1105016566, 1105024728);
-// @todo test me $response = $ccm->createCampaignByObj(array $campaign);
+//$response = $ccm->createCampaignByObj(array(
+//	'id' => 0,
+//	'name' => 'REMOVE ME',
+//	'analytics' => true,
+//	'deliverySpeed' => false,
+//	'emaildedupflg' => true,
+//	'mailinglistId' => '1105024728',
+//	'notification' => false,
+//	'postClickTracking' => true,
+//	'messageId' => '1105016566'
+//));
 //$response = $ccm->deleteCampaign('1108005887');
 //$response = $ccm->updateCampaign('1108284680', 'name', 'REMOVE ME (2)');
 //$response = $ccm->updateCampaignByObj(array(
@@ -148,16 +159,16 @@ $ccm = new CampaignCommander(LOGIN, PASSWORD, KEY);
 // @todo internal error $response = $ccm->getCampaignSnapshotReport('1106582188');
 
 //$response = $ccm->createBanner('REMOVE ME', 'TEXT', null, 'BODY');
-// @todo Internal error $response = $ccm->createBannerByObj(array(
-//	'id' => null,
+//$response = $ccm->createBannerByObj(array(
+//	'id' => 0,
 //	'content' => 'BODY',
 //	'contentType' => 'TEXT',
 //	'name' => 'REMOVE ME'
 //));
-//$response = $ccm->deleteBanner('1022122');
+//$response = $ccm->deleteBanner('1022242');
 //$response = $ccm->updateBanner('1020582', 'Name', 'TEMP');
 // @todo Internal error $response = $ccm->updateBannerByObj(array(
-//	'id' => '1020582',
+//	'id' => '1022242',
 //	'content' => 'MEKKER',
 //	'name' => 'REMOVE ME'
 //));
@@ -192,12 +203,16 @@ $ccm = new CampaignCommander(LOGIN, PASSWORD, KEY);
 
 //$response = $ccm->createTestGroup('TEST');
 // @todo Internal error $response = $ccm->createTestGroupByObj(array(
-//	'id' => null,
+//	'id' => 0,
+//	'name' => 'TEST'
 //));
 //$response = $ccm->addTestMember('1048473894275', '1000207911');
 //$response = $ccm->removeTestMember('1048473894275', '1000207911');
-//$response = $ccm->deleteTestGroup('1000207911');
-// @todo test me $response = $ccm->updateTestGroupByObj(array $testGroup);
+//$response = $ccm->deleteTestGroup('1000208161');
+//$response = $ccm->updateTestGroupByObj(array(
+//	'id' => '1000208161',
+//	'name' => 'REMOVE ME'
+//));
 //$response = $ccm->getTestGroup('1000207911');
 //$response = $ccm->getClientTestGroups();
 
