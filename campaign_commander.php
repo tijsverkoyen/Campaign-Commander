@@ -8,6 +8,10 @@
  * The class is documented in the file itself. If you find any bugs help me out and report them. Reporting can be done by sending an email to php-campaign-commander-member-bugs[at]verkoyen[dot]eu.
  * If you report a bug, make sure you give me enough information (include your code).
  *
+ * Changelog since 1.1.0
+ * - bugfix: deleteTestGroup was using a wrong field.
+ * - extra errorhandling
+ *
  * Changelog since 1.0.0
  * - modified the class to reflect the current API.
  * - implemented all Message-methods.
@@ -32,7 +36,7 @@
  * This software is provided by the author "as is" and any express or implied warranties, including, but not limited to, the implied warranties of merchantability and fitness for a particular purpose are disclaimed. In no event shall the author be liable for any direct, indirect, incidental, special, exemplary, or consequential damages (including, but not limited to, procurement of substitute goods or services; loss of use, data, or profits; or business interruption) however caused and on any theory of liability, whether in contract, strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this software, even if advised of the possibility of such damage.
  *
  * @author			Tijs Verkoyen <php-campaign-commander-member@verkoyen.eu>
- * @version			1.1.0
+ * @version			1.1.1
  *
  * @copyright		Copyright (c), Tijs Verkoyen. All rights reserved.
  * @license			BSD License
@@ -46,7 +50,7 @@ class CampaignCommander
 	const WSDL_URL = 'apiccmd/services/CcmdService?wsdl';
 
 	// current version
-	const VERSION = '1.1.0';
+	const VERSION = '1.1.1';
 
 
 	/**
@@ -250,8 +254,29 @@ class CampaignCommander
 		// add token
 		$parameters['token'] = $this->token;
 
-		// make the call
-		$response = $this->soapClient->__soapCall($method, array($parameters));
+		try
+		{
+			// make the call
+			$response = $this->soapClient->__soapCall($method, array($parameters));
+		}
+
+		catch(Exception $e)
+		{
+			// init var
+			$message = $e->getMessage();
+
+			// internal debugging enabled
+			if(self::DEBUG)
+			{
+				echo '<pre>';
+				var_dump(htmlentities($this->soapClient->__getLastRequest()));
+				var_dump($this);
+				echo '</pre>';
+			}
+
+			// throw exception
+			throw new CampaignCommanderException($message);
+		}
 
 		// validate response
 		if(is_soap_fault($response))
@@ -3043,7 +3068,7 @@ class CampaignCommander
 	{
 		// build parameters
 		$parameters = array();
-		$parameters['groupId'] = (string) $groupId;
+		$parameters['id'] = (string) $groupId;
 
 		// make the call
 		return $this->doCall('deleteTestGroup', $parameters);
