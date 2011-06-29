@@ -300,7 +300,7 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testGetAllTrackedLinks()
 	{
-		$this->assertEquals(array(), $this->campaignCommander->getAllTrackedLinks('1104992528'));
+		$this->assertType('array', $this->campaignCommander->getAllTrackedLinks('1104992528'));
 	}
 
 
@@ -934,26 +934,45 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 	}
 
 
-//	/**
-//	 * Tests CampaignCommander->updateCampaign()
-//	 */
-//	public function testUpdateCampaign()
-//	{
-//		// TODO Auto-generated CampaignCommanderTest->testUpdateCampaign()
-//		$this->markTestIncomplete("updateCampaign test not implemented");
-//		$this->campaignCommander->updateCampaign(/* parameters */);
-//	}
+	/**
+	 * Tests CampaignCommander->updateCampaign()
+	 */
+	public function testUpdateCampaign()
+	{
+		$messageId = $this->campaignCommander->createEmailMessage('TEST (remove me)', '', 'subject', 'from', 'email@mhg.ccmdemail.net', 'to', '[EMV TEXTPART]body', 'utf-8', 'replyTo', 'replyTo@mail.be');
+		$var = $this->campaignCommander->createCampaign('REMOVE ME', time(), $messageId, '1105024728');
+
+		$this->assertTrue($this->campaignCommander->updateCampaign($var, 'name', 'TEST 2 (remove me)'));
+
+		// cleanup
+		$this->campaignCommander->deleteMessage($messageId);
+		$this->campaignCommander->deleteCampaign($var);
+	}
 
 
-//	/**
-//	 * Tests CampaignCommander->updateCampaignByObj()
-//	 */
-//	public function testUpdateCampaignByObj()
-//	{
-//		// TODO Auto-generated CampaignCommanderTest->testUpdateCampaignByObj()
-//		$this->markTestIncomplete("updateCampaignByObj test not implemented");
-//		$this->campaignCommander->updateCampaignByObj(/* parameters */);
-//	}
+	/**
+	 * Tests CampaignCommander->updateCampaignByObj()
+	 */
+	public function testUpdateCampaignByObj()
+	{
+		$messageId = $this->campaignCommander->createEmailMessage('TEST (remove me)', '', 'subject', 'from', 'email@mhg.ccmdemail.net', 'to', '[EMV TEXTPART]body', 'utf-8', 'replyTo', 'replyTo@mail.be');
+		$var = $this->campaignCommander->createCampaign('REMOVE ME', time(), $messageId, '1105024728');
+
+		$this->assertTrue($this->campaignCommander->updateCampaignByObj(array(
+			'id' => $var,
+			'name' => 'TADA',
+			'analytics' => true,
+			'deliverySpeed' => null,
+			'emaildedupflg' => true,
+			'mailinglistId' => '1105024728',
+			'notification' => false,
+			'postClickTracking' => true
+		)));
+
+		// cleanup
+		$this->campaignCommander->deleteMessage($messageId);
+		$this->campaignCommander->deleteCampaign($var);
+	}
 
 
 //	/**
@@ -1431,15 +1450,17 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	}
 
 
-//	/**
-//	 * Tests CampaignCommander->createTestGroup()
-//	 */
-//	public function testCreateTestGroup()
-//	{
-//		// TODO Auto-generated CampaignCommanderTest->testCreateTestGroup()
-//		$this->markTestIncomplete("createTestGroup test not implemented");
-//		$this->campaignCommander->createTestGroup(/* parameters */);
-//	}
+	/**
+	 * Tests CampaignCommander->createTestGroup()
+	 */
+	public function testCreateTestGroup()
+	{
+		$var = $this->campaignCommander->createTestGroup('REMOVE ME');
+		$this->assertType('string', $var);
+
+		// cleanup
+		$this->campaignCommander->deleteTestGroup($var);
+	}
 
 
 //	/**
@@ -1453,37 +1474,42 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	}
 
 
-//	/**
-//	 * Tests CampaignCommander->addTestMember()
-//	 */
-//	public function testAddTestMember()
-//	{
-//		// TODO Auto-generated CampaignCommanderTest->testAddTestMember()
-//		$this->markTestIncomplete("addTestMember test not implemented");
-//		$this->campaignCommander->addTestMember(/* parameters */);
-//	}
+	/**
+	 * Tests CampaignCommander->addTestMember()
+	 */
+	public function testAddTestMember()
+	{
+		$var = $this->campaignCommander->createTestGroup('REMOVE ME');
+		$this->assertTrue($this->campaignCommander->addTestMember('1048473894275', $var));
+
+		// cleanup
+		$this->campaignCommander->removeTestMember('1048473894275', $var);
+		$this->campaignCommander->deleteTestGroup($var);
+	}
 
 
-//	/**
-//	 * Tests CampaignCommander->removeTestMember()
-//	 */
-//	public function testRemoveTestMember()
-//	{
-//		// TODO Auto-generated CampaignCommanderTest->testRemoveTestMember()
-//		$this->markTestIncomplete("removeTestMember test not implemented");
-//		$this->campaignCommander->removeTestMember(/* parameters */);
-//	}
+	/**
+	 * Tests CampaignCommander->removeTestMember()
+	 */
+	public function testRemoveTestMember()
+	{
+		$var = $this->campaignCommander->createTestGroup('REMOVE ME');
+		$this->campaignCommander->addTestMember('1048473894275', $var);
+		$this->assertTrue($this->campaignCommander->removeTestMember('1048473894275', $var));
+
+		// cleanup
+		$this->campaignCommander->deleteTestGroup($var);
+	}
 
 
-//	/**
-//	 * Tests CampaignCommander->deleteTestGroup()
-//	 */
-//	public function testDeleteTestGroup()
-//	{
-//		// TODO Auto-generated CampaignCommanderTest->testDeleteTestGroup()
-//		$this->markTestIncomplete("deleteTestGroup test not implemented");
-//		$this->campaignCommander->deleteTestGroup(/* parameters */);
-//	}
+	/**
+	 * Tests CampaignCommander->deleteTestGroup()
+	 */
+	public function testDeleteTestGroup()
+	{
+		$var = $this->campaignCommander->createTestGroup('REMOVE ME');
+		$this->assertTrue($this->campaignCommander->deleteTestGroup($var));
+	}
 
 
 //	/**
