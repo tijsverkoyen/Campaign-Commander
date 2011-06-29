@@ -550,6 +550,7 @@ class CampaignCommander
 
 	/**
 	 * Create email-message.
+	 * @remark	you have to specify an id-element width value 0.
 	 *
 	 * @return	string				The message ID.
 	 * @param	array $message		The message object.
@@ -590,6 +591,7 @@ class CampaignCommander
 
 	/**
 	 * Create SMS-message.
+	 * @remark	you have to specify an id-element width value 0.
 	 *
 	 * @return	string				The message ID.
 	 * @param	array $message		The message object.
@@ -2346,6 +2348,7 @@ class CampaignCommander
 
 	/**
 	 * Creates a banner.
+	 * @remark	you have to specify an id-element width value 0.
 	 *
 	 * @return	string			The ID of the banner.
 	 * @param	array $banner	The banner.
