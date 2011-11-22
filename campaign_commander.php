@@ -8,6 +8,9 @@
  * The class is documented in the file itself. If you find any bugs help me out and report them. Reporting can be done by sending an email to php-campaign-commander-member-bugs[at]verkoyen[dot]eu.
  * If you report a bug, make sure you give me enough information (include your code).
  *
+ * Changelog since 1.1.1
+ * - implemented segmentationCreateSegment
+ *
  * Changelog since 1.1.0
  * - bugfix: deleteTestGroup was using a wrong field.
  * - extra errorhandling
@@ -1435,13 +1438,13 @@ class CampaignCommander
 	 */
 	public function segmentationCreateSegment($name, $sampleType, $description = null, $sampleRate = null)
 	{
-		// @todo	validation
 		// build parameters
 		$parameters = array();
-		$parameters['name'] = (string) $name;
-		if($description !== null) $parameters['desc'] = (string) $description;
-		$parameters['sampleType'] = (string) $sampleType;
-		if($sampleRate !== null) $parameters['sampleRate'] = (float) $sampleRate;
+		$parameters['apiSegmentation']['id'] = 0;	// @remark	don't ask me why. If I provide null or an empty string a get an Internal error.
+		$parameters['apiSegmentation']['name'] = (string) $name;
+		if($description !== null) $parameters['apiSegmentation']['description'] = (string) $description;
+		$parameters['apiSegmentation']['sampleType'] = (string) $sampleType;
+		$parameters['apiSegmentation']['sampleRate'] = ($sampleRate !== null) ? (float) $sampleRate : 0;
 
 		// make the call
 		return $this->doCall('segmentationCreateSegment', $parameters);

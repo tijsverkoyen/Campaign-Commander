@@ -88,7 +88,7 @@ $ccm = new CampaignCommander(LOGIN, PASSWORD, KEY);
 // @todo test me $response = $ccm->deleteUrl($messageId, $order);
 // @todo test me $response = $ccm->getUrlByOrder('1104992528', 1);
 
-// @todo internal error $response = $ccm->segmentationCreateSegment('REMOVE ME', 'ALL');
+//$response = $ccm->segmentationCreateSegment('REMOVEME', 'ALL');
 // @todo test me $response = $ccm->segmentationDeleteSegment($id);
 // @todo test me $response = $ccm->segmentationAddStringDemographicCriteriaByObj(array $stringDemographicCriteria);
 // @todo test me $response = $ccm->segmentationAddNumericDemographicCriteriaByObj(array $numericDemographicCriteria);

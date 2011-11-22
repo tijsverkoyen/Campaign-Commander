@@ -586,15 +586,16 @@ class CampaignCommanderTest extends PHPUnit_Framework_TestCase
 //	}
 
 
-//	/**
-//	 * Tests CampaignCommander->segmentationCreateSegment()
-//	 */
-//	public function testSegmentationCreateSegment()
-//	{
-//		// TODO Auto-generated CampaignCommanderTest->testSegmentationCreateSegment()
-//		$this->markTestIncomplete("segmentationCreateSegment test not implemented");
-//		$this->campaignCommander->segmentationCreateSegment(/* parameters */);
-//	}
+	public function testSegmentationCreateSegment()
+	{
+		// create the segment
+		$var = $this->campaignCommander->segmentationCreateSegment('REMOVE ME', 'ALL');
+
+		$this->assertType('string', $var);
+
+		// delete message
+		$this->campaignCommander->segmentationDeleteSegment($var);
+	}
 
 
 //	/**
