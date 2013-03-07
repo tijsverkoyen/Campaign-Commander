@@ -1,0 +1,28 @@
+{
+    "name": "mylittleparis/campaign-commander",
+    "type": "library",
+    "description": "Client for the Campaign Commander API (wrapper)",
+    "keywords": ["campaign", "commander", "email", "api"],
+    "authors": [
+        {
+            "name": "Tijs Verkoyen",
+            "email": "php-campaign-commander-member@verkoyen.eu"
+        },
+        {
+            "name": "Ludovic Fleury",
+            "email": "ludovic.fleury@mylittleparis.com"
+        }
+    ],
+    "support": {
+        "email": "ludovic.fleury@mylittleparis.com",
+        "issues": "https://github.com/MyLittleParis/Campaign-Commander"
+    },
+    "autoload": {
+        "psr-0": { "MyLittle\\CampaignCommander": "src/" }
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.4.4",
+        "ext-soap": "*"
+    }
+}
