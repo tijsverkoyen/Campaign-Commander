@@ -1,6 +1,7 @@
 {
     "name": "mylittleparis/campaign-commander",
     "type": "library",
+    "licence": "BSD-3-Clause",
     "description": "Client for the Campaign Commander API (wrapper)",
     "keywords": ["campaign", "commander", "email", "api"],
     "authors": [
