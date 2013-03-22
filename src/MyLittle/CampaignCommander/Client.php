@@ -3,6 +3,7 @@
 namespace MyLittle\CampaignCommander;
 
 use MyLittle\CampaignCommander\CampaignCommanderException;
+use Exception;
 
 /**
  * Campaign Commander class
@@ -249,7 +250,6 @@ class Client
         } catch (Exception $e) {
             // init var
             $message = $e->getMessage();
-
             // internal debugging enabled
             if (self::DEBUG) {
                 echo '<pre>';

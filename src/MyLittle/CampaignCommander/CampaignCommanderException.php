@@ -2,6 +2,8 @@
 
 namespace MyLittle\CampaignCommander;
 
+use Exception;
+
 /**
  * Campaign Commander Exception class
  *
